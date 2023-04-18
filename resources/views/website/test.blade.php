@@ -1,0 +1,1 @@
+<a href="{{route('getLogin')}}">fae</a>
