@@ -12,7 +12,8 @@ class NewsSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {   for ($j = 0; $j <= 10; $j++) {
+    {   
+        for ($j = 0; $j <= 10; $j++) {
          for ($i = 0; $i <= 10; $i++) {
             DB::table('news')->insert([
                 'uuid' => Str::uuid(),
@@ -22,6 +23,7 @@ class NewsSeeder extends Seeder
                 'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 'author' => 'DTP',
                 'status' => 1,
+                'where_in' => $i ,
                 'category_id' => $i,
                 'remember_token' => null,
                 'created_at' => now(),

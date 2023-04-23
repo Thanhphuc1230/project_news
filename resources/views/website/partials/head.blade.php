@@ -15,22 +15,29 @@
 <title>Home | 24h News</title>
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="{{ asset('website/img/favicon.png') }}"type="image/x-icon" />
+<link rel="shortcut icon" href="{{ asset('website/img/favicon.png') }} " type="image/x-icon" />
 
 <!-- Web Fonts  -->
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed%7CRoboto+Slab:300,400,700%7CRoboto:300,400,500,700" rel="stylesheet"> 
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href=" {{asset('website/css/bootstrap.min.css') }} ">
-<link rel="stylesheet" href=" {{asset('website/css/main.css') }} ">
-<link rel="stylesheet" href=" {{asset('website/css/style.css') }} ">
-<link rel="stylesheet" href=" {{asset('website/css/colors.css') }} ">
-<link rel="stylesheet" href=" {{asset('website/css/responsive.css') }} ">
-<link rel="stylesheet" href=" {{asset('website/css/jquery-ui.min.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/bootstrap.min.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/main.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/style.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/colors.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/responsive.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/jquery-ui.min.css') }} ">
+<link rel="stylesheet" href="{{ asset('website/css/weather-icons.min.css') }} ">
 
 <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js') }} "></script>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js ') }} "></script>
       <![endif]-->
 </head>
+
 <body>
-    <div id="wrapper" data-color="red"> 
+<div id="pageloader">
+  <div class="loader-item"> <img src="{{ asset('website/img/load.gif')}}" alt='loader' /> </div>
+</div>
+<!--========== BEGIN #WRAPPER ==========-->
+<div id="wrapper" data-color="red"> 
+  <!--========== BEGIN #HEADER ==========-->

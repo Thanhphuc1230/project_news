@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('author');
             $table->tinyInteger('status');
+            $table->tinyInteger('where_in');
             $table->unsignedBigInteger('category_id');
             $table->rememberToken();
             $table->timestamps();

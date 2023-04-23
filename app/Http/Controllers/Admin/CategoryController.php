@@ -15,9 +15,9 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   $data['categories'] = Category::all();
-
-        $data['category_selected']= Category::where('parent_id', 0)->get();
+    {   
+        $data['categories'] = Category::select('uuid','name_cate', 'status_cate', 'created_at')->get();
+        $data['category_selected'] = Category::where('parent_id', 0)->select('id_category', 'name_cate')->get();
         return view('admin.modules.category.index',$data);
     }
 

@@ -13,29 +13,32 @@ use App\Models\User;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 class LoginController extends Controller
 {
-    public function getLogin(){
+    public function getLogin()
+    {
         return view('login.login');
     }
 
-    public function postLogin(LoginRequest $request){
+    public function postLogin(LoginRequest $request)
+    {
 
         $login = [
             'email' => $request->email,
-            'password' => $request->password,      
+            'password' => $request->password,
         ];
-        
+
         $user = User::where('email', $request->email)->first();
-        
+
         if ($user) {
             if ($user->email_verified_at != null) {
                 if (Auth::attempt($login)) {
                     if (Auth::user()->level == 1) {
                         $request->session()->regenerate();
-                        return redirect()->route('admin.categories.index');
+                        return redirect()->route('admin.categories.index')->with('success', 'Login with admin account success.');
                     } else {
-                        return redirect()->route('website.index');
+                        return redirect()->route('website.index')->with('success', 'Login with admin account success.');
                     }
                 } else {
                     return back()->with([
@@ -52,55 +55,112 @@ class LoginController extends Controller
                 'error' => 'This account does not exit',
             ]);
         }
-        
-
-      
     }
 
     public function getRegister()
     {
-         return view ('login.register');
+        return view('login.register');
     }
 
     public function sendMail()
     {
-         return view ('login.send-mail');
+        return view('login.send-mail');
     }
 
     public function postRegister(RegisterRequest $request)
-    {   
+    {
         $data = $request->except('_token', 'password_confirmation', 'avatar');
 
         $data['password'] = bcrypt($request->password);
         $data['created_at'] = new \DateTime();
         $data['uuid'] = Str::uuid();
         $data['avatar'] = '';
-        $data['status_user'] =1;
-             $result = DB::table('users')->insert($data);
-        if($result){
+        $data['status_user'] = 1;
+        $result = DB::table('users')->insert($data);
+        if ($result) {
             Mail::to($request->email)->send(new NotifyMail($data));
             return view('login/send-mail');
         }
     }
-     public function verify($uuid)
-        {
-            $data =DB::table('users')->where('uuid', $uuid)->first();
-            if($data->email_verified_at == null){
-                DB::table('users')->where('uuid', $uuid)->update(['email_verified_at' => new \DateTime()]);
-                return redirect()->route('website.getLogin')->with('success', 'Email verification successful');
-        }else {
+
+    public function verify($uuid)
+    {
+        $data = DB::table('users')->where('uuid', $uuid)->first();
+        if ($data->email_verified_at == null) {
+            DB::table('users')->where('uuid', $uuid)->update(['email_verified_at' => new \DateTime()]);
+            return redirect()->route('getLogin')->with('success', 'Email verification successful');
+        } else {
             return redirect()->route('website.index');
         }
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
- 
+
         $request->session()->invalidate();
-     
+
         $request->session()->regenerateToken();
 
-        
+
         return redirect()->route('getLogin');
+    }
+    public function getForgot(){
+
+        return view('login.forgot');
+    }
+    public function sendResetLink(Request $request){
+        $request->validate([
+            'email'=>'required|email|exists:users,email'
+        ]);
+
+        // echo $token_random =Str::random();
+        $token = \Str::random(64);
+        \DB::table('password_reset_tokens')->insert([
+            'email'=>$request->email,
+            'token'=>$token,
+            'created_at'=>Carbon::now(),
+
+        ]);
+
+        $action_link = route('showResetFrom',['token'=>$token,'email'=>$request->email]);
+        $body = "Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản  <b> News</b> được liên kết với " .$request->email.". Bạn có thể đặt lại mật khẩu của mình bằng cách nhấp vào liên kết bên dưới";
+
+        \Mail::send('emails.forgot',['action_link'=>$action_link,'body'=>$body], function($message) use ($request){
+            $message->from('news24h@gmail.com','News.com');
+            $message->to($request->email,'Your name')
+                ->subject('Reset Password');
+        });
+
+
+        return back()->with('success', 'We have e-mailed your password reset link!');
+    }
+    public function showResetFrom(Request $request, $token = null){
+        return view('login.resetPassword')->with(['token'=>$token,'email'=>$request->email]);
+    }
+    public function resetPassword(Request $request){
+        $request->validate([
+            'email'=>'required|email|exists:users,email',
+            'password'=>'required|min:5|confirmed',
+            'password_confirmation'=>'required',
+        ]);
+        $check_token = DB::table('password_reset_tokens')->where([
+            'email'=>$request->email,
+            'token'=>$request->token,
+        ])->first();
+        if(!$check_token){
+            return back()->withInput()->with('error', 'Invalid token');
+        }else{
+
+            User::where('email', $request->email)->update([
+                'password'=>\Hash::make($request->password)
+            ]);
+
+            \DB::table('password_reset_tokens')->where([
+                'email'=>$request->email
+            ])->delete();
+
+            return redirect()->route('getLogin')->with('success', 'Mật khẩu đã được đổi bạn có thể đăng nhập với mật khẩu mới')->with('verifiedEmail', $request->email);
+        }
     }
 }

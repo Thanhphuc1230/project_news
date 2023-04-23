@@ -3,7 +3,6 @@
         Options -MultiViews -Indexes
     </IfModule>
 
-    RewriteEngine On
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -18,4 +17,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_php5.c>
+php_value max_execution_time 120
+php_value memory_limit 2048M
 </IfModule>

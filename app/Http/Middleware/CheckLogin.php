@@ -16,9 +16,9 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->level == 1  ) {
+        if (Auth::check() && Auth::user()->level == 1) {
             return $next($request);
-        }
-        return new Response(view('website.modules.404.404'), 404);
+         }
+//         return redirect()->route('website.error404');
     }
 }

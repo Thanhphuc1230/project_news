@@ -21,7 +21,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $view->with('new_header', Category::where('parent_id' ,0)->get());
+            $id = last(request()->segments());
+            $mini_categories = collect();
+            if ($id != 0) {
+                $mini_categories = Category::select('name_cate','id_category')->where('parent_id',$id)->get();
+            }
+            $new_header = Category::select('name_cate','id_category')->where('parent_id', 0)->where('status_cate', 1)->get();
+            $view->with('mini_categories', $mini_categories)
+                ->with('new_header', $new_header);
         });
     }
 }

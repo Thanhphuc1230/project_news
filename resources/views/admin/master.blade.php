@@ -1,9 +1,9 @@
-@php
+{{-- @php
 $admin = Auth::user();
 if($admin == NULL){
     return back(); 
 }
-@endphp
+@endphp --}}
 
 @include('admin.partials.head')
 </head>

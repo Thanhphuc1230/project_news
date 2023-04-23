@@ -15,8 +15,13 @@ class NewsController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   $data['news'] = News::all();
-        $data['categories_select'] = Category::all();
+    {   
+        $data['categories_select'] = Category::select('id_category', 'name_cate')->get();
+
+        $data['news'] = DB::table('news')
+                ->join('categories', 'news.category_id', '=', 'categories.id_category')
+                ->select('news.*', 'categories.name_cate')
+                ->get();
         return view('admin.modules.news.index',$data);
     }
     /**
