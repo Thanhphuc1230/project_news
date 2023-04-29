@@ -9,4 +9,10 @@ class News extends Model
 {
     use HasFactory;
     protected $table = 'news';
+
+    protected $primaryKey = 'id_new';
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

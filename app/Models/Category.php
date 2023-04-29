@@ -21,7 +21,4 @@ class Category extends Model
     public $timestamps = true;
     const UPDATED_AT = null;
 
-    public static function where(string $string)
-    {
-    }
 }

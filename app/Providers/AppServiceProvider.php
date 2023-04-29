@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -22,13 +23,30 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $id = last(request()->segments());
-            $mini_categories = collect();
-            if ($id != 0) {
-                $mini_categories = Category::select('name_cate','id_category')->where('parent_id',$id)->get();
-            }
-            $new_header = Category::select('name_cate','id_category')->where('parent_id', 0)->where('status_cate', 1)->get();
-            $view->with('mini_categories', $mini_categories)
-                ->with('new_header', $new_header);
+        
+            $mini_categories = $id != 0 ? Category::select('name_cate', 'id_category')->where('parent_id', $id)->get() : collect();
+            $new_header = Category::select('name_cate', 'id_category')->where('parent_id', 1)->where('status_cate', 1)->get();
+        
+            $latest_news = DB::table('news')
+                ->select('uuid', 'avatar', 'title')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->inRandomOrder()
+                ->limit(5)
+                ->get();
+        
+            $idOfLatestNews = $latest_news->pluck('uuid')->toArray();
+        
+            $latest_news_2 = DB::table('news')
+                ->select('uuid', 'avatar', 'title')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->whereNotIn('uuid', $idOfLatestNews)
+                ->inRandomOrder()
+                ->limit(5)
+                ->get();
+        
+            $view->with(compact('mini_categories', 'new_header', 'latest_news', 'latest_news_2'));
         });
     }
 }

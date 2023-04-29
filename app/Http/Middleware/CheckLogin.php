@@ -19,6 +19,6 @@ class CheckLogin
         if (Auth::check() && Auth::user()->level == 1) {
             return $next($request);
          }
-//         return redirect()->route('website.error404');
+         return response()->view('website.modules.error.index', [], 404);
     }
 }

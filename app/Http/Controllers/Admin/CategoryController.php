@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {   
         $data['categories'] = Category::select('uuid','name_cate', 'status_cate', 'created_at')->get();
-        $data['category_selected'] = Category::where('parent_id', 0)->select('id_category', 'name_cate')->get();
+        $data['category_selected'] = Category::select('id_category', 'name_cate')->where('parent_id', 1)->get();
         return view('admin.modules.category.index',$data);
     }
 
@@ -46,7 +46,7 @@ class CategoryController extends Controller
         return redirect()->back()->with('success', 'Kích hoạt sản phẩm thành công');
     }
     public function active_categories($id){
-
+        
         Category::where('uuid',$id)->update(['status_cate'=>0]);
 
         return redirect()->back()->with('success', 'Tắt kích hoạt sản phẩm thành công');

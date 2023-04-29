@@ -22,6 +22,7 @@ return new class extends Migration
             $table->tinyInteger('status');
             $table->tinyInteger('where_in');
             $table->unsignedBigInteger('category_id');
+            $table->integer('views')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

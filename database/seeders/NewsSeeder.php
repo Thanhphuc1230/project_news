@@ -18,7 +18,7 @@ class NewsSeeder extends Seeder
             DB::table('news')->insert([
                 'uuid' => Str::uuid(),
                 'title' => 'News ' . $i .' + ' . $j,
-                'avatar' => 'news' . $i . '.jpg',
+                'avatar' => 'download.jpg',
                 'intro' => 'This is news ' . $i.' + ' . $j,
                 'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 'author' => 'DTP',

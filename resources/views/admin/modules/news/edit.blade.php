@@ -26,6 +26,29 @@
                     <input type="text" name="intro" class="form-control" value="{{ old('intro', $new->intro) }}">
                 </div>
                 <div class="mb-3">
+                    <h6 class="card-subtitle mb-2">Thuộc nhóm</h6>
+                    <select class="form-select" name="category_id">
+                        @foreach ($category_selected as $category_option)
+                            <option value="{{ $category_option->id_category }}"
+                                {{ old('category_id', $new->category_id) == $category_option->id_category ? 'selected' : '' }}>
+                                {{ $category_option->name_cate }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <h6 class="card-subtitle mb-2">Vị trí</h6>
+                    <select class="form-select" name="where_in">
+                        {{ $new->where_in }}
+                        <option value="1" {{ $new->where_in == 1 ? 'selected' : '' }}>Hot news</option>
+                        <option value="2" {{ $new->where_in == 2 ? 'selected' : '' }}>Tin thế giới</option>
+                        <option value="3" {{ $new->where_in == 3 ? 'selected' : '' }}>Thời sự</option>
+                        <option value="4" {{ $new->where_in == 4 ? 'selected' : '' }}>Công nghệ</option>
+                        <option value="5" {{ $new->where_in == 5 ? 'selected' : '' }}>Sức khỏe</option>
+                        <option value="6" {{ $new->where_in == 6 ? 'selected' : '' }}>Du lịch</option>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <h6 class="card-subtitle mb-2">Avatar Current</h6>
                     @php
                         $avatar = !empty($new->avatar) ? $new->avatar : 'default.png';

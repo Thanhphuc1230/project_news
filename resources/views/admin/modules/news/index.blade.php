@@ -38,8 +38,6 @@
                                         <div class="white_card_header">
                                             <div class="box_header m-0">
                                                 <div class="main-title">
-                                                    <a href="{{route('admin.news.index')}}"> <i class="ti-arrow-left"
-                                                            style="font-size: 25px"></i></a>
                                                     <h3 class="m-0">News Create</h3>
                                                 </div>
                                             </div>
@@ -49,9 +47,20 @@
                                                 <h6 class="card-subtitle mb-2">Thuộc nhóm</h6>
                                                 <select class="form-select" name="category_id">
                                                     @foreach($categories_select as $category)
-                                                    <option selected="" value="{{$category->parent_id}}">
+                                                    <option selected="" value="{{$category->id_category}}">
                                                         {{$category->name_cate}}</option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <h6 class="card-subtitle mb-2">Ví trị trang chủ</h6>
+                                                <select class="form-select" name="where_in">
+                                                    <option selected="" value="1">Hot news</option>
+                                                    <option  value="2">Tin thế giới</option>
+                                                    <option  value="3">Thời sự</option>
+                                                    <option  value="4">Công nghệ</option>
+                                                    <option  value="5">Sức khỏe</option>
+                                                    <option  value="6">Du lịch</option>
                                                 </select>
                                             </div>
 
@@ -154,8 +163,27 @@
                             <tr role="row" class="odd">
                                 @foreach ($news as $new)
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{$new->name_cate}}</td>
-                                <td>{{$new->where_in}}</td>
+                                <td>{{$new->name_cate}}
+                                </td>
+                                <td> @switch($new->where_in)
+                                    @case(1)
+                                        Hot news
+                                        @break
+                                    @case(2)
+                                        Tin thế giới
+                                        @break
+                                    @case(3)
+                                        Thời sự
+                                        @break
+                                    @case(4)
+                                        Tin công nghệ
+                                        @break
+                                    @case(5)
+                                        Sức khỏe
+                                        @break
+                                    @default
+                                        Du lịch
+                                @endswitch</td>
                                 @php
                                 $avatar = !empty($new->avatar) ? $new->avatar : 'default_user.png';
                                 @endphp

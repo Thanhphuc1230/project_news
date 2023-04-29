@@ -16,12 +16,15 @@ class NewsController extends Controller
      */
     public function index()
     {   
-        $data['categories_select'] = Category::select('id_category', 'name_cate')->get();
-
+        $data['categories_select'] = Category::select('id_category', 'name_cate','parent_id')
+        ->where('id_category','>',1) 
+        ->get();
         $data['news'] = DB::table('news')
                 ->join('categories', 'news.category_id', '=', 'categories.id_category')
                 ->select('news.*', 'categories.name_cate')
+                ->orderBy('categories.name_cate', 'asc')
                 ->get();
+
         return view('admin.modules.news.index',$data);
     }
     /**
@@ -63,7 +66,7 @@ class NewsController extends Controller
 
         if ($new->exists()) {
             $data['new'] = $new->first();
-      
+            $data['category_selected']= Category::all();
             return view('admin.modules.news.edit',$data);
         } else {
             abort(404);

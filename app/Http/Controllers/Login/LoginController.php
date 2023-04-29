@@ -38,7 +38,7 @@ class LoginController extends Controller
                         $request->session()->regenerate();
                         return redirect()->route('admin.categories.index')->with('success', 'Login with admin account success.');
                     } else {
-                        return redirect()->route('website.index')->with('success', 'Login with admin account success.');
+                        return redirect()->route('website.index')->with('success', 'Đăng nhập thành công ');
                     }
                 } else {
                     return back()->with([

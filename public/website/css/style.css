@@ -1445,7 +1445,7 @@ blockquote img {
     	2.0 - Header
     -----------------------------------------------------------------*/
 header {
-	height: 250px;
+	height: 215px;
 }
 /* 2.1 - Top-menu 
     ---------------------------------------------------------------------- */
@@ -5640,4 +5640,11 @@ textarea {
 .side-menu-fixer {
   position: fixed;
   
+}
+
+.header_category{
+	margin-bottom: -25px;
+}
+.title_new{
+	margin-top: -30px;
 }
