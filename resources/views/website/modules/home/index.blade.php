@@ -18,14 +18,20 @@
                     <div class="item">
                         <div class="item-image-1"><a class="img-link"
                                 href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                    class="img-responsive img-full"
-                                    src="{{ asset('images/news/' . $item->avatar) }}" alt=""></a><span><a
-                                    class="label-5"
-                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'id' => $item['category']->id_category]) }}">{{ $item['category']->name_cate }}</a></span>
+                                    class="img-responsive img-full" @php if (substr($item->avatar, 0, 8) === "https://")
+                                {
+                                echo 'src="'. $item->avatar.'"';
+                                } else {
+                                echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                } @endphp
+                                alt=""></a><span><a class="label-5"
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->id_category]) }}">{{
+                                    $item['category']->name_cate }}</a></span>
                         </div>
                         <div class="item-content">
                             <div class="title-left title-style04 underline04">
-                                <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 15) }}
+                                <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{
+                                            Str::words($item->title, 15) }}
                                         </strong></a>
                                 </h3>
                             </div>
@@ -33,13 +39,12 @@
                                     class="external-link">{{ Str::words($item->intro, 15) }}</a>
                             </p>
                             <div><a
-                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'id' => $item['category']->id_category]) }}"><span
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->id_category]) }}"><span
                                         class="read-more">{{ $item['category']->name_cate }}</span></a></div>
                         </div>
                     </div>
                     @endforeach
                     <!-- End .item -->
-
                 </div>
                 <!--========== END .NEWS ==========-->
             </div>
@@ -50,29 +55,35 @@
                 <div class="news">
                     <!-- Begin .item-->
                     @foreach ($breaking_news_right as $item)
-                        <div class="item">
-                            <div class="item-image-1"><a class="img-link"
-                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                        class="img-responsive img-full"
-                                        src="{{ asset('images/news/' . $item->avatar) }}" alt=""></a><span><a
-                                        class="label-5"
-                                        href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'id' => $item['category']->id_category]) }}">{{ $item['category']->name_cate }}</a></span>
-                            </div>
-                            <div class="item-content">
-                                <div class="title-left title-style04 underline04">
-                                    <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 15) }}
-                                            </strong></a>
-                                    </h3>
-                                </div>
-                                <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
-                                        class="external-link">{{ Str::words($item->intro, 15) }}</a>
-                                </p>
-                                <div><a
-                                        href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'id' => $item['category']->id_category]) }}"><span
-                                            class="read-more">{{ $item['category']->name_cate }}</span></a></div>
-                            </div>
+                    <div class="item">
+                        <div class="item-image-1"><a class="img-link"
+                                href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
+                                    class="img-responsive img-full" @php if (substr($item->avatar, 0, 8) === "https://")
+                                {
+                                echo 'src="'. $item->avatar.'"';
+                                } else {
+                                echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                } @endphp
+                                alt=""></a><span><a class="label-5"
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->id_category]) }}">{{
+                                    $item['category']->name_cate }}</a></span>
                         </div>
-                        <!-- End .item-->
+                        <div class="item-content">
+                            <div class="title-left title-style04 underline04">
+                                <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{
+                                            Str::words($item->title, 15) }}
+                                        </strong></a>
+                                </h3>
+                            </div>
+                            <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
+                                    class="external-link">{{ Str::words($item->intro, 15) }}</a>
+                            </p>
+                            <div><a
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->id_category]) }}"><span
+                                        class="read-more">{{ $item['category']->name_cate }}</span></a></div>
+                        </div>
+                    </div>
+                    <!-- End .item-->
                     @endforeach
                 </div>
                 <!--========== END .NEWS ==========-->
@@ -95,31 +106,37 @@
                         <h3 class="subtitle">Tin tức mới nhất</h3>
                     </div>
                     @foreach ($nation_news as $item)
-                        <!-- Begin .item-->
-                        <div class="item">
-                            <div class="item-image-2"><a class="img-link"
-                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                        class="img-responsive img-full"
-                                        src="{{ asset('images/news/' . $item->avatar) }}" alt=""></a><span><a
-                                        class="label-2"
-                                        href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'id' => $item['category']->id_category]) }}">{{ $item['category']->name_cate }}</a></span>
+                    <!-- Begin .item-->
+                    <div class="item">
+                        <div class="item-image-2"><a class="img-link"
+                                href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
+                                    class="img-responsive img-full" @php if (substr($item->avatar, 0, 8) === "https://")
+                                {
+                                echo 'src="'. $item->avatar.'"';
+                                } else {
+                                echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                } @endphp
+                                alt=""></a><span><a class="label-2"
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item['category']->id_category]) }}">{{
+                                    $item['category']->name_cate }}</a></span>
+                        </div>
+                        <div class="item-content">
+                            <div class="title-left title-style04 underline04">
+                                <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{
+                                            $item->title }}</strong>
+                                    </a></h3>
                             </div>
-                            <div class="item-content">
-                                <div class="title-left title-style04 underline04">
-                                    <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ $item->title }}</strong>
-                                        </a></h3>
-                                </div>
-                                <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">
-                                        {{ $item->intro }}</a></p>
+                            <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">
+                                    {{ $item->intro }}</a></p>
 
-                                <div> <a href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'id' => $item['category']->id_category]) }}"
-                                        target="_blank"><span class="read-more">{{ $item['category']->name_cate }}</span></a>
-                                </div>
+                            <div> <a href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->id_category]) }}"
+                                    target="_blank"><span class="read-more">{{ $item['category']->name_cate
+                                        }}</span></a>
                             </div>
                         </div>
-                        <!-- End .item-->
+                    </div>
+                    <!-- End .item-->
                     @endforeach
-
                 </div>
                 <!--========== End .NEWS ==========-->
             </div>
@@ -138,23 +155,28 @@
                     <div class="newsfeed-3">
                         <ul>
                             @foreach ($boot_new['most_views'] as $item)
-                                <li>
-                                    <div class="item">
-                                        <div class="item-image"><a class="img-link"
-                                                href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                                    class="img-responsive img-full"
-                                                    src="{{ asset('images/news/' . $item->avatar) }}"
-                                                    alt=""></a>
-                                        </div>
-                                        <div class="item-content">
-                                            <h4 class="ellipsis"><a
-                                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a>
-                                            </h4>
-                                            <p class="ellipsis"><i class="fas fa-eye"></i> {{ $item->new_view }} views
-                                            </p>
-                                        </div>
+                            <li>
+                                <div class="item">
+                                    <div class="item-image"><a class="img-link"
+                                            href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
+                                                class="img-responsive img-full" @php if (substr($item->avatar, 0, 8) ===
+                                            "https://") {
+                                            echo 'src="'. $item->avatar.'"';
+                                            } else {
+                                            echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                            } @endphp
+                                            alt=""></a>
                                     </div>
-                                </li>
+                                    <div class="item-content">
+                                        <h4 class="ellipsis"><a
+                                                href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{
+                                                $item->title }}</a>
+                                        </h4>
+                                        <p class="ellipsis"><i class="fas fa-eye"></i> {{ $item->new_view }} views
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
                             @endforeach
 
                         </ul>

@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Title  -->
-    <title>Home | 24h News</title>
+    <title>@yield('module', 'Trang chủ') </title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('website/img/favicon.png') }} " type="image/x-icon" />

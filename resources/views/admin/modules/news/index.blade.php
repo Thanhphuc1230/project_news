@@ -152,7 +152,7 @@
                                     aria-label="Lesson: activate to sort column ascending">Tác giả</th>
                                 <th scope="col" class="sorting" tabindex="0" aria-controls="DataTables_Table_1"
                                     rowspan="1" colspan="1" style="width: 127px;"
-                                    aria-label="Lesson: activate to sort column ascending">Created_at</th>
+                                    aria-label="Lesson: activate to sort column ascending">Updated_at</th>
                                 <th scope="col" class="sorting" tabindex="0" aria-controls="DataTables_Table_1"
                                     rowspan="1" colspan="1" style="width: 67px;"
                                     aria-label="Price: activate to sort column ascending">Action</th>
@@ -188,8 +188,21 @@
                                 $avatar = !empty($new->avatar) ? $new->avatar : 'default_user.png';
                                 @endphp
 
-                                <td><img src="{{ asset('images/news/'.$avatar) }}" width="50px"></td>
-                                <td style="display:inline-block;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;max-width: 20ch;">{{ $new->title }}</td>
+                                <td>
+                              @php 
+                                if (substr($avatar, 0, 8) === "https://") {
+                                    echo '<img src="'. $avatar.'" width="50px">';
+                                    } else {
+                                        echo '<img src="' . asset('images/news/'.$avatar) . '" width="50px">';
+                                    }
+                              @endphp
+                          
+                                    
+
+                                   
+                                </td>
+                                <td style="display:inline-block;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;max-width: 20ch;">
+                                    {{  html_entity_decode($new->title) }}</td>
                                 <td>
                                     @php
                                     if($new->status == 0){
@@ -209,7 +222,13 @@
 
                                 </td>
                                 <td>{{ $new->author }}</td>
-                                <td>{{ date('d/m/Y', strtotime($new->created_at )) }}</td>
+                                <td>
+                                    @if($new->updated_at == null)
+                                    {{ date('d/m/Y H:i:s', strtotime($new->created_at )) }}
+                                    @else
+                                    {{ date('d/m/Y H:i:s', strtotime($new->updated_at )) }}
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="action_btns d-flex">
                                         <a href="{{ route('admin.news.edit', ['uuid' => $new->uuid]) }}"

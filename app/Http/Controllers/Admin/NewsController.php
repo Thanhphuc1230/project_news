@@ -9,6 +9,7 @@ use App\Models\Category;
 use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 class NewsController extends Controller
 {
      /**
@@ -18,6 +19,7 @@ class NewsController extends Controller
     {   
         $data['categories_select'] = Category::select('id_category', 'name_cate','parent_id')
         ->where('id_category','>',1) 
+        ->where('status_cate',1)
         ->get();
         $data['news'] = DB::table('news')
                 ->join('categories', 'news.category_id', '=', 'categories.id_category')
@@ -34,7 +36,7 @@ class NewsController extends Controller
     {   
         $data = $request->except('_token');
         $data['created_at'] = new \DateTime(); 
-        $data['uuid'] = Uuid::uuid4()->toString();
+        $data['uuid'] = Str::uuid();
         
         $imageName = time().'-'.$request->avatar->getClientOriginalName();  
         $request->avatar->move(public_path('images/news'), $imageName);
@@ -66,7 +68,10 @@ class NewsController extends Controller
 
         if ($new->exists()) {
             $data['new'] = $new->first();
-            $data['category_selected']= Category::all();
+            $data['category_selected'] = Category::select('id_category', 'name_cate','parent_id')
+            ->where('id_category','>',1) 
+            ->where('status_cate',1)
+            ->get();
             return view('admin.modules.news.edit',$data);
         } else {
             abort(404);
@@ -89,10 +94,6 @@ class NewsController extends Controller
             
         } else {
             $image_path = public_path('images/news') . "/" . $new_current->avatar;
-
-            if (file_exists($image_path)) {
-                unlink($image_path);
-            }
 
             $imageName = time().'-'.$request->avatar->getClientOriginalName();  
             $request->avatar->move(public_path('images/news'), $imageName);

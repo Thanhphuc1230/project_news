@@ -49,6 +49,16 @@
             </a>
         </li>
         <li class="">
+            <a aria-expanded="false" href="{{ route('admin.comment.index') }}">
+                <div class="nav_icon_small">
+                    <img src="{{ asset('style/img/menu-icon/4.svg') }}" alt="">
+                </div>
+                <div class="nav_title">
+                    <span>Comment</span>
+                </div>
+            </a>
+        </li>
+        <li class="">
             <a aria-expanded="false" href="{{ route('admin.users.index') }}">
                 <div class="nav_icon_small">
                     <img src="{{ asset('style/img/menu-icon/4.svg') }}" alt="">

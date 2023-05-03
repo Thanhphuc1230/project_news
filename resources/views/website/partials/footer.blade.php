@@ -73,7 +73,7 @@
                         <div class="tagcloud">
                             @foreach ($new_header as $item)
                                 <a
-                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'id' => $item->id_category]) }}">{{ $item->name_cate }}</a>
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item->id_category]) }}">{{ $item->name_cate }}</a>
                             @endforeach
                         </div>
                     </div>

@@ -24,19 +24,29 @@
                         <div class="white_card_body">
                             <form>
                                 <div class="mb-3">
-                                    <h6 class="card-subtitle mb-2">Email User Comment</h6>
-                                    <input type="text" name="name_cate" class="form-control"
-                                        placeholder="vd: Samsung" value="{{ old('email', $category->name_cate) }}">
+                                    <h4 class="card-subtitle mb-2">Email người cmt</h4>
+                                    <input type="text" name="email"class="form-control"
+                                        value="{{ old('email', $comment->email) }}" disabled >
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="card-subtitle mb-2">Bài viết</h4>
+                                    <input type="text" name="email"class="form-control"
+                                        value="{{ old('email', $comment->title) }}" disabled >
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="card-subtitle mb-2">Tiêu đề</h4>
+                                    <textarea type="text" name="comment" class="form-control"maxlength="225" rows="3" 
+                                        >{{ old('comment', $comment->comment) }} </textarea>
                                 </div>
 
                                 <div class="mb-3">
                                     <h6 class="card-subtitle mb-2">Trạng thái</h6>
                                     <select class="form-select" name="status_cate">
                                         <option selected="" value="1"
-                                            {{ old('status', $category->status_cate) == 1 ? 'selected' : '' }}>Hiện
+                                            {{ old('status', $comment->status_cate) == 1 ? 'selected' : '' }}>Hiện
                                         </option>
                                         <option value="0"
-                                            {{ old('status', $category->status_cate) == 0 ? 'selected' : '' }}>Ẩn
+                                            {{ old('status', $comment->status_cate) == 0 ? 'selected' : '' }}>Ẩn
                                         </option>
                                     </select>
                                 </div>

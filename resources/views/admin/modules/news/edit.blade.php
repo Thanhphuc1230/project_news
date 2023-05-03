@@ -19,11 +19,12 @@
             <div class="white_card_body">
                 <div class="mb-3">
                     <h4 class="card-subtitle mb-2">Tiêu đề</h4>
-                    <input type="text" name="title" class="form-control" value="{{ old('title', $new->title) }}">
+                    <input type="text" name="title" class="form-control"
+                        value="{{ html_entity_decode(old('title', $new->title)) }}">
                 </div>
                 <div class="mb-3">
                     <h4 class="card-subtitle mb-2">Giới thiệu</h4>
-                    <input type="text" name="intro" class="form-control" value="{{ old('intro', $new->intro) }}">
+                    <input type="text" name="intro" class="form-control" value="{{  html_entity_decode(old('intro', $new->intro)) }}">
                 </div>
                 <div class="mb-3">
                     <h6 class="card-subtitle mb-2">Thuộc nhóm</h6>
@@ -50,12 +51,17 @@
                 </div>
                 <div class="mb-3">
                     <h6 class="card-subtitle mb-2">Avatar Current</h6>
-                    @php
-                        $avatar = !empty($new->avatar) ? $new->avatar : 'default.png';
-                    @endphp
+                   
                     <div>
-                        <img class="img-fluid img-thumbnail" src="{{ asset('images/news/' . $avatar) }}" alt=""
-                            width="250px">
+                        @php
+                    $avatar = !empty($new->avatar) ? $new->avatar : 'default.png';
+                                if (substr($avatar, 0, 8) === "https://") {
+                                    echo '<img src="'. $avatar.'" width="250px">';
+                                    } else {
+                                        echo '<img src="' . asset('images/news/'.$avatar) . '" width="250px">';
+                                    }
+                        
+                    @endphp
                     </div>
                 </div>
                 <div class="mb-3">

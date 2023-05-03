@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Login;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Biscolab\ReCaptcha\Facades\ReCaptcha;
 class LoginRequest extends FormRequest
 {
     /**
@@ -24,6 +24,7 @@ class LoginRequest extends FormRequest
         return [
             'email' =>'required',
             'password'=>'required',
+            'g-recaptcha-response' => 'required|recaptcha',
         ];
     }
 
@@ -32,6 +33,8 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'Vui lòng nhập Email ',
             'password.required' => 'Vui lòng nhập mật khẩu của bạn',
+            'g-recaptcha-response.required' =>'Vui lòng xác thực nếu bạn không phải robot',
+            'g-recaptcha-response.captcha' =>'Lỗi CAPTCHA! Vui lòng thử lại',
         ];
     }
 }

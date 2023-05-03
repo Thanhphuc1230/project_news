@@ -63,11 +63,11 @@ class CommentController extends Controller
         $comment = Comment::join('news', 'comments.post_id_comment', '=', 'news.uuid')
         ->join('users', 'comments.user_id_comment', '=', 'users.uuid')
         ->select('comments.*', 'news.title', 'users.email')
-        ->where('comments.uuid', $id);
-        
+        ->where('comments.uuid', $id)
+        ->first();
         if ($comment->exists()) {
-            $data['comment'] = $comment->get();
-            dd($data);
+            $data['comment'] = $comment;
+     
             return view('admin.modules.comment.edit',$data);
         } else {
             abort(404);

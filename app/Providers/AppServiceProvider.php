@@ -22,10 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $id = last(request()->segments());
-        
-            $mini_categories = $id != 0 ? Category::select('name_cate', 'id_category')->where('parent_id', $id)->get() : collect();
-            $new_header = Category::select('name_cate', 'id_category')->where('parent_id', 1)->where('status_cate', 1)->get();
+            $uuid = last(request()->segments());
+            $id = DB::table('categories')->where('uuid', $uuid)->value('id_category');
+            
+            $mini_categories = $uuid != 0 ? Category::select('name_cate', 'id_category','uuid')->where('parent_id', $id)->get() : collect();
+            
+            $new_header = Category::select('name_cate', 'id_category','uuid')->where('parent_id', 1)->where('status_cate', 1)->get();
         
             $latest_news = DB::table('news')
                 ->select('uuid', 'avatar', 'title')

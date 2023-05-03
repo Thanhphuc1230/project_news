@@ -17,7 +17,7 @@ class NewsController extends Controller
     public function getChildCategory($id_category){
         $data['category_child']=DB::table('categories')->select('name_cate','parent_id')->where('id_category',$id_category)->first();
         $parent_id = $data['category_child']->parent_id;
-        $data['category']=DB::table('categories')->select('id_category','name_cate','parent_id')->where('id_category',$parent_id)->first();
+        $data['category']=DB::table('categories')->select('id_category','uuid','name_cate','parent_id')->where('id_category',$parent_id)->first();
 
         return $data;
     }
@@ -36,9 +36,13 @@ class NewsController extends Controller
         ->join('categories', 'categories.id_category', '=', 'news.category_id')
         ->select('news.*','categories.name_cate')
         ->where('news.uuid', $uuid)
-        ->get();
-        
-        $category_id = $data['detail_new'][0]->category_id;
+        ->first();
+
+        $data['count_comment'] = DB::table('comments')
+             ->where('post_id_comment', $uuid)
+             ->where('status_comment',1)
+             ->count();
+        $category_id = $data['detail_new']->category_id;
         //name category in header
         $data['category_header'] = $this->getChildCategory($category_id);
         //sidebar right of detail
@@ -48,6 +52,7 @@ class NewsController extends Controller
          ->orderByDesc('new_view')  
          ->limit(6)  
          ->get();
+         $uuidOfNewUpdated = $data['news_updated']->pluck('uuid')->toArray();
         //featured_posts in bot of detail
         $data['featured_posts'] = DB::table('news')
             ->where('category_id', $category_id)
@@ -66,11 +71,23 @@ class NewsController extends Controller
         ->inRandomOrder()
         ->limit(3)  
         ->get();
+
+        $uuidOfFeaturedPostBot = $data['featured_posts_bot']->pluck('uuid')->toArray();
+        //all uuid of detail post 
+        $uuidOfPostInDetail= array_merge([$uuid], $uuidOfFeaturedPost,$uuidOfFeaturedPostBot,$uuidOfNewUpdated);
+
+        $data['maybeYouLike'] = News::with('category')
+        ->whereNotIn('news.uuid', $uuidOfPostInDetail)
+        ->where('status', 1)
+        ->limit(7)
+        ->get();
         //show comments
         $data['comments_user'] =DB::table('comments')
         ->join('users','users.uuid','=','comments.user_id_comment')
         ->select('users.fullname','users.avatar','comments.comment','comments.post_id_comment','comments.created_at')
         ->where('comments.post_id_comment',$uuid)
+        ->where('comments.status_comment',1)
+        ->limit(4)
         ->get();
         //count comment of post
         $data['count_comments']= Comment::where('post_id_comment', $uuid)->where('status_comment',1)->count();

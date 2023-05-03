@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\CommentController;
 
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\NewsController as NController;
+use App\Http\Controllers\Website\CrawlerController;
+use App\Http\Controllers\Website\ProfileController;
 
 use App\Http\Controllers\Login\LoginController;
 
@@ -104,12 +106,13 @@ Route::name('website.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/checkUser', [HomeController::class, 'checkUser'])->name('checkUser');
     //Category news
-    Route::get('/category/{name_cate}/{id}', [HomeController::class, 'category_news'])->name('category_news');
+    Route::get('/category/{name_cate}/{uuid}', [HomeController::class, 'category_news'])->name('category_news');
     
     //News
     Route::get('/detail/{uuid}', [NController::class, 'detailNew'])->name('detailNew');
     Route::post('/postComment/{uuidOfNew}', [NController::class, 'postComment'])->name('postComment');
-
+    Route::get('/get-data', [CrawlerController::class, 'fetchAllTGDD'])->name('getData');
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 
 });
 
