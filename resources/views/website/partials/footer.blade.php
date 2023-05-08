@@ -15,8 +15,8 @@
                             But having awesome content on your website is crucial to making inbound marketing
                             work for your business.<br>
                             We know ... easier said than done. </p>
-                        <div class="site-logo"><a href="index.html"><img src="{{ asset('website/img/logo.png') }} "
-                                    alt="Side Logo" />
+                        <div class="site-logo"><a href="{{ route('website.index') }}"><img
+                                    src="{{ asset('website/img/logo.png') }}" alt="Side Logo" loading="lazy" />
                                 <h3>24h <span>News</span></h3>
                                 <p>Your 24h News Source</p>
                             </a></div>
@@ -30,12 +30,17 @@
                                         <div class="item">
                                             <div class="item-image"><a class="img-link"
                                                     href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                                        class="img-responsive img-full"
-                                                        src="{{ asset('images/news/' . $item->avatar) }}"
+                                                        class="img-responsive img-full" loading="lazy"
+                                                        @php if (substr($item->avatar, 0,
+                                                8) === "https://") {
+                                                echo 'src="'. $item->avatar.'"';
+                                                } else {
+                                                echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                                } @endphp
                                                         alt=""></a></div>
                                             <div class="item-content">
                                                 <p class="ellipsis"><a
-                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a>
+                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ html_entity_decode($item->title) }}</a>
                                                 </p>
                                             </div>
                                         </div>
@@ -53,12 +58,17 @@
                                         <div class="item">
                                             <div class="item-image"><a class="img-link"
                                                     href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                                        class="img-responsive img-full"
-                                                        src="{{ asset('images/news/' . $item->avatar) }}"
+                                                        class="img-responsive img-full" loading="lazy"
+                                                        @php if (substr($item->avatar, 0,
+                                                8) === "https://") {
+                                                echo 'src="'. $item->avatar.'"';
+                                                } else {
+                                                echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                                } @endphp
                                                         alt=""></a></div>
                                             <div class="item-content">
                                                 <p class="ellipsis"><a
-                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a>
+                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ html_entity_decode($item->title) }}</a>
                                                 </p>
                                             </div>
                                         </div>
@@ -73,7 +83,7 @@
                         <div class="tagcloud">
                             @foreach ($new_header as $item)
                                 <a
-                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item->id_category]) }}">{{ $item->name_cate }}</a>
+                                    href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item->uuid]) }}">{{ $item->name_cate }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -89,7 +99,8 @@
     <!-- Begin .container -->
     <div class="container">
         <!-- Begin .copyright -->
-        <div class="copyright"> &copy; 2016, Copyrights 24hNews Theme. All Rights Reserved </div>
+        <div class="copyright">{{ date('Y') }} 24h NEWS <i class="fa-solid fa-heart" style="color: #ff0000;"></i>
+            Made With By <a href="https://www.facebook.com/Tphuc1505/" style="color: #ff0000;"> DTP </a></div>
         <!-- End .copyright -->
         <!--  Begin .footer-social-icons -->
         <div class="footer-social-icons">
@@ -122,8 +133,6 @@
         });
     });
 </script>
+
 </body>
-
-<!-- Mirrored from 24hnews.via-theme.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 14 Apr 2023 17:09:41 GMT -->
-
 </html>

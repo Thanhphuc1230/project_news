@@ -93,9 +93,6 @@ class UserController extends Controller
             $data['avatar'] = $user_current->avatar; 
         } else {
             $image_path = public_path('images/users') . "/" . $user_current->avatar;
-            // if (file_exists($image_path)) {
-            //     unlink($image_path);
-            // }
             $imageName = time().'-'.$request->avatar->getClientOriginalName();  
             $request->avatar->move(public_path('images/users'), $imageName);
             $data['avatar'] = $imageName;

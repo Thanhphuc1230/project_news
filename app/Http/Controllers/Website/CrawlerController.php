@@ -9,20 +9,29 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 class CrawlerController extends Controller
 {
-    public function fetchAllTGDD()
+    public function index($category_id, $link,$where_in )
     {
-        $html = file_get_html('https://tuoitre.vn/kinh-doanh.htm');
-
+        $html = file_get_html($link);
+        $i = 0; 
         foreach ($html->find('.box-category-item') as $element) {
             // get the title
             $title_element = $element->find('.box-content-title h3 a', 0);
             $title = isset($title_element) ? $title_element->title : '';
             $href = isset($title_element) ? $title_element->href : '';
 
+             // check if title exists in the news table
+            $existing_title = DB::table('news')->where('title', $title)->exists();
+            if ($existing_title) {
+                continue;
+            }
+            
             // get the intro
             $intro_element = $element->find('.box-category-content p', 0);
             $intro = isset($intro_element) ? $intro_element->plaintext : '';
-
+            $existing_intro = DB::table('news')->where('intro', $intro)->exists();
+            if ($existing_intro) {
+                continue;
+            }
             // get the image
             $img_element = $element->find('.box-category-link-with-avatar img', 0);
             $img_src = isset($img_element) ? $img_element->src : '';
@@ -50,13 +59,39 @@ class CrawlerController extends Controller
                 'author' => 'Tuoi Tre',
                 'status' => 0,
                 'new_view' => 0,
-                'where_in' => 1,
-                'category_id' => 5,
+                'where_in' => $where_in,
+                'category_id' => $category_id,
                 'created_at' => now()
             ]);
-          $i = 1; 
+    
           $i++;
         }
-        echo 'success' .$i .'post';
+        if($i == 0 ){
+            echo 'cant get post ';
+        }else{
+            echo 'success ' .$i .' post';
+        }
+       
+    }
+    public function featchAllTuoiTre () 
+    {
+        // $result = DB::table('categories')->where('parent_id',10 )->get();
+        // foreach ($result as $item) {
+        //     $link = $item->link;
+        //     $category_id = $item->id_category;
+           
+        //     if($item->parent_id == 1){
+        //         $where_in = $item->id_category;
+        //     }else{
+        //         $where_in = $item->parent_id;
+        //     }
+
+        //     $this->index ($category_id, $link,$where_in );
+        // }
+            $link= 'https://tuoitre.vn/kinh-doanh/tai-chinh.htm';
+            $category_id = 18;
+            $where_in = 5;
+
+        $this->index ($category_id, $link,$where_in );
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\NewsController as NController;
 use App\Http\Controllers\Website\CrawlerController;
 use App\Http\Controllers\Website\ProfileController;
+use App\Http\Controllers\Website\SearchController;
 
 use App\Http\Controllers\Login\LoginController;
 
@@ -38,7 +39,7 @@ Route::get('verify/{uuid}', [LoginController::class, 'verify'])->name('verify');
 
 
 //Login
-Route::get('/login_user', [LoginController::class, 'getLogin'])->name('getLogin');
+Route::get('/get_login', [LoginController::class, 'getLogin'])->name('getLogin');
 Route::post('/post_login', [LoginController::class, 'postLogin'])->name('postLogin');
 //register
 Route::get('/register', [LoginController::class, 'getRegister'])->name('getRegister');
@@ -105,15 +106,27 @@ Route::prefix('admin')->name('admin.')->middleware('check_login')->group(functio
 Route::name('website.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/checkUser', [HomeController::class, 'checkUser'])->name('checkUser');
+    //search 
+    Route::post('/search', [SearchController::class, 'search'])->name('search');
+    Route::get('/searchNow', [SearchController::class, 'searchNow'])->name('searchNow');
     //Category news
     Route::get('/category/{name_cate}/{uuid}', [HomeController::class, 'category_news'])->name('category_news');
-    
+
     //News
     Route::get('/detail/{uuid}', [NController::class, 'detailNew'])->name('detailNew');
     Route::post('/postComment/{uuidOfNew}', [NController::class, 'postComment'])->name('postComment');
-    Route::get('/get-data', [CrawlerController::class, 'fetchAllTGDD'])->name('getData');
-    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('/get-data', [CrawlerController::class, 'featchAllTuoiTre'])->name('getData');
 
+    //account_user
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
+        Route::get('/delete/{uuid_history}',[ProfileController::class, 'deleteHistory'])->name('deleteHistory');
+        Route::get('/edit_comment/{uuid}', [ProfileController::class, 'editComment'])->name('editComment');
+        Route::post('/updated_comment/{uuid}', [ProfileController::class, 'updatedComment'])->name('updatedComment');
+        Route::post('/updated_profile/{uuid}', [ProfileController::class, 'updatedProfile'])->name('updatedProfile');
+        Route::post('/updated_password/{uuid}', [ProfileController::class, 'updatedPassword'])->name('updatedPassword');
+    });
+   
 });
 
 

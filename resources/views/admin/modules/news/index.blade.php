@@ -56,11 +56,11 @@
                                                 <h6 class="card-subtitle mb-2">Ví trị trang chủ</h6>
                                                 <select class="form-select" name="where_in">
                                                     <option selected="" value="1">Hot news</option>
-                                                    <option  value="2">Tin thế giới</option>
-                                                    <option  value="3">Thời sự</option>
-                                                    <option  value="4">Công nghệ</option>
-                                                    <option  value="5">Sức khỏe</option>
-                                                    <option  value="6">Du lịch</option>
+                                                    @foreach($select_where_in as $category)
+                                                    <option  value="{{$category->id_category}}">
+                                                        {{$category->name_cate}}</option>
+                                                    @endforeach
+                                                    <option selected="" value="0">Không lên trang chính</option>
                                                 </select>
                                             </div>
 
@@ -89,9 +89,9 @@
                                                 rows="3">{{ old('content')}}</textarea>
                                             <script>
                                                 CKEDITOR.replace( 'content', {
-                                    filebrowserUploadUrl: "{{ route('admin.upload', ['_token' => csrf_token()]) }}",
-                                    filebrowserUploadMethod: 'form'
-                                })
+                                                    filebrowserUploadUrl: "{{ route('admin.upload', ['_token' => csrf_token()]) }}",
+                                                    filebrowserUploadMethod: 'form'
+                                                })
                                             </script>
                                         </div>
 
@@ -170,19 +170,34 @@
                                         Hot news
                                         @break
                                     @case(2)
-                                        Tin thế giới
-                                        @break
-                                    @case(3)
                                         Thời sự
                                         @break
+                                    @case(3)
+                                        Thế giới
+                                        @break
                                     @case(4)
-                                        Tin công nghệ
+                                       Pháp luật
                                         @break
                                     @case(5)
-                                        Sức khỏe
+                                        Kinh doanh
+                                        @break
+                                    @case(6)
+                                        Công nghệ
+                                        @break
+                                    @case(7)
+                                        Du lịch
+                                        @break
+                                    @case(8)
+                                        Văn hóa
+                                        @break
+                                    @case(9)
+                                        Giải trí
+                                        @break
+                                    @case(10)
+                                        Thể thao
                                         @break
                                     @default
-                                        Du lịch
+                                        Sức khỏe
                                 @endswitch</td>
                                 @php
                                 $avatar = !empty($new->avatar) ? $new->avatar : 'default_user.png';

@@ -1,6 +1,7 @@
 @extends('website.master')
 @section('module', $new_category['data']['new_category']->name_cate)
 @section('content')
+
     <!-- Begin .breadcrumb-line -->
     <div class="container">
         <!-- Begin .breadcrumb-line -->
@@ -15,6 +16,7 @@
         <!-- End .breadcrumb-line -->
     </div>
     <!-- End .breadcrumb-line -->
+    @include('website.partials.search')
     <section class="module highlight">
         <div class="container">
             <div class="row no-gutter">
@@ -84,7 +86,7 @@
                                                         alt=""></a></div>
                                             <div class="item-content">
                                                 <h4 class="ellipsis"><a
-                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ Str::words($item->title, 15) }}
+                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ html_entity_decode(Str::words($item->title, 15)) }}
                                                     </a>
                                                 </h4>
                                                 <p class="ellipsis"><i class="fas fa-eye"></i> {{ $item->new_view }} views
@@ -130,7 +132,7 @@
                                 </div>
                                 <div class="item-content">
                                     <div class="title-left title-style04 underline04">
-                                        <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 12) }}</strong>
+                                        <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 12)) }}</strong>
                                             </a></h3>
                                     </div>
                                     <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
@@ -170,7 +172,7 @@
                                 </div>
                                 <div class="item-content">
                                     <div class="title-left title-style04 underline04">
-                                        <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 12) }}</strong>
+                                        <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 12)) }}</strong>
                                             </a></h3>
                                     </div>
                                     <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
@@ -221,7 +223,7 @@
                                 <div class="item-content">
                                     <div class="title-left title-style04 underline04">
                                         <h3><a
-                                                href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 15) }}</strong></a>
+                                                href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 15)) }}</strong></a>
                                         </h3>
                                     </div>
                                     <p><a
@@ -235,7 +237,7 @@
                             </div>
                             <!-- End .item-->
                         @endforeach
-
+                            
                     </div>
                     <!--========== End .NEWS ==========-->
                 </div>
@@ -266,7 +268,7 @@
                                                         alt=""></a></div>
                                             <div class="item-content">
                                                 <h4 class="ellipsis"><a
-                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ Str::words($item->title, 15) }}</a>
+                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ html_entity_decode(Str::words($item->title, 15)) }}</a>
                                                 </h4>
                                                 <p class="ellipsis"><a
                                                         href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ Str::words($item->intro, 15) }}</a>

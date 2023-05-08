@@ -28,7 +28,7 @@
                         <div class="search-icon-btn"> <span style="cursor:pointer"><i class="fa fa-search"></i></span>
                         </div>
                         <div class="search-input">
-                            <input type="search" class="search-bar" placeholder="Search..." title="Search" />
+                                <input type="search" class="search-bar" placeholder="Search..." title="Search" />
                         </div>
                     </div>
                 </li>
@@ -96,6 +96,11 @@
                                 href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item->uuid]) }}">{{ $item->name_cate }}</a>
                         </li>
                     @endforeach
+                    @if (Auth::user())
+                        <li><a href="{{route('website.profile',['uuid'=>Auth::user()->uuid])}}">Profile</a></li>
+                    @else
+                        <li><a href="{{ route('getLogin') }}">Login</a></li>
+                    @endif
                     <!--========== END DROPDOWN MEGA-DROPDOWN ==========-->
                 </ul>
                 <!--========== END .NAV NAVBAR-NAV ==========-->
@@ -127,8 +132,10 @@
             <!-- End .container -->
         </div>
         <!--========== END .SECOND-MENU NAVBAR #NAV-BELOW-MAIN ==========-->
+       
     </div>
 </header>
+
 @if (Session::get('success'))
     <div class="alert alert-success">
         <ul>

@@ -4,6 +4,8 @@
   <!--========== BEGIN #MAIN-SECTION ==========-->
 
   <!-- ========== BEGIN PARALLAX ========== -->
+  
+  
   @yield('content')
 
   <!--========== BEGIN .MODULE ==========-->

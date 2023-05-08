@@ -27,7 +27,9 @@ class AppServiceProvider extends ServiceProvider
             
             $mini_categories = $uuid != 0 ? Category::select('name_cate', 'id_category','uuid')->where('parent_id', $id)->get() : collect();
             
-            $new_header = Category::select('name_cate', 'id_category','uuid')->where('parent_id', 1)->where('status_cate', 1)->get();
+            $new_header = Category::select('name_cate', 'id_category','uuid')
+            ->where('parent_id', 1)
+            ->where('status_cate', 1)->get();
         
             $latest_news = DB::table('news')
                 ->select('uuid', 'avatar', 'title')

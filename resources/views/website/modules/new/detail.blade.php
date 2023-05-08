@@ -1,6 +1,6 @@
 @extends('website.master')
 
-@section('module', html_entity_decode($detail_new ->title))
+@section('module', html_entity_decode($detail_new->title))
 @section('content')
     <div id="main-section">
         <div class="container header_category">
@@ -27,33 +27,36 @@
                     <div class="col-md-8">
                         <!--========== BEGIN .POST ==========-->
                         <div class="post post-full clearfix title_new">
-                                <div class="entry-title">
-                                    <h2 class="entry-title">{{ html_entity_decode($detail_new ->title) }}</h2>
-                                </div>
-                                <div class="entry-main">
+                            <div class="entry-title">
+                                <h2 class="entry-title">{{ html_entity_decode($detail_new->title) }}</h2>
+                            </div>
+                            <div class="entry-main">
 
-                                    <div class="post-meta-elements">
-                                        <div class="post-meta-author"> <i class="fa fa-user"></i><a href="#">By
-                                                {{ $detail_new->author }}</a> </div>
-                                        <div class="post-meta-date"> <i
-                                                class="fa fa-calendar"></i>{{ date('d-m-Y h:i A', strtotime($detail_new->created_at)) }}
-                                        </div>
-                                        <div class="post-meta-comments"><i class="fa fa-eye" aria-hidden="true"></i>{{$count_comment}}
-                                            Comments
-                                        </div>
-                                        <div class="post-meta-comments"> <i class="fas fa-eye"></i>
-                                            {{ $detail_new->new_view }} views
-                                        </div>
+                                <div class="post-meta-elements">
+                                    <div class="post-meta-author"> <i class="fa fa-user"></i><a href="#">By
+                                            {{ $detail_new->author }}</a> </div>
+                                    <div class="post-meta-date"> <i
+                                            class="fa fa-calendar"></i>{{ date('d-m-Y h:i A', strtotime($detail_new->created_at)) }}
                                     </div>
-                                </div>
-                                <div class="entry-main">
-                                    <div class="entry-content">
-                                        <p>
-                                        <h3>{{ $detail_new->intro }}</h3>
-                                        </p>
-                                        <p>{!! $detail_new->content !!}</p>
+                                    <div class="post-meta-comments"><i class="fa fa-eye"
+                                            aria-hidden="true"></i>{{ $count_comment }}
+                                        Comments
                                     </div>
+                                    <div class="post-meta-comments"> <i class="fas fa-eye"></i>
+                                        {{ $detail_new->new_view }} views
+                                    </div>
+                                    <button class="btn btn-primary btn-black" onclick="location.href='/save'">Save
+                                      </button>
                                 </div>
+                            </div>
+                            <div class="entry-main">
+                                <div class="entry-content">
+                                    <p>
+                                    <h3>{{ $detail_new->intro }}</h3>
+                                    </p>
+                                    <p>{!! $detail_new->content !!}</p>
+                                </div>
+                            </div>
                         </div>
                         <!--  End .post -->
 
@@ -96,7 +99,8 @@
                                 <h4>leave a reply</h4>
                             </div>
                             <form class="form-reply ui-form"
-                                action="{{ route('website.postComment', ['uuidOfNew' => $detail_new->uuid]) }}" method="post">
+                                action="{{ route('website.postComment', ['uuidOfNew' => $detail_new->uuid]) }}"
+                                method="post">
                                 @csrf
                                 <div class="row no-gutter">
                                     <div class="col-md-12">
@@ -139,10 +143,12 @@
                                                         src="{{ asset('images/news/' . $item->avatar) }}"
                                                         alt=""></a></div>
                                             <div class="item-content">
-                                                <h3>{{ $loop->iteration }}</h3>
+
                                                 <p><a
                                                         href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a>
                                                 </p>
+                                                <p><i class="fas fa-eye"></i>
+                                                    {{ $item->new_view }} views</p>
                                             </div>
                                         </div>
                                     </li>
@@ -258,12 +264,18 @@
                                     <div class="entry-image"><a class="img-link"
                                             href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
                                                 class="img-responsive img-full"
-                                                src="{{ asset('images/news/' . $item->avatar) }}" alt=""></a>
+                                                @php if (substr($item->avatar, 0, 8)
+                                    === "https://") {
+                                    echo 'src="'. $item->avatar.'"';
+                                    } else {
+                                    echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                    } @endphp
+                                                alt=""></a>
                                     </div>
                                     <div class="entry-content">
                                         <div class="title-left title-style04 underline04">
                                             <h3><a
-                                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 15) }}</strong></a>
+                                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 15)) }}</strong></a>
                                             </h3>
                                             <i
                                                 class="fa fa-clock-o"></i>{{ date('d-m-Y ', strtotime($item->created_at)) }}<span
@@ -271,7 +283,7 @@
                                         </div>
 
                                         <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
-                                                class="external-link">{{ Str::words($item->intro, 30) }}</a></p>
+                                                class="external-link">{{ Str::words($item->intro, 35) }}</a></p>
                                         <div> <a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><span
                                                     class="read-more">Continue reading</span></a> </div>
                                     </div>
@@ -302,12 +314,18 @@
                                     <div class="entry-image"><a class="img-link"
                                             href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
                                                 class="img-responsive img-full"
-                                                src="{{ asset('images/news/' . $item->avatar) }}" alt=""></a>
+                                                @php if (substr($item->avatar, 0, 8)
+                                    === "https://") {
+                                    echo 'src="'. $item->avatar.'"';
+                                    } else {
+                                    echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                    } @endphp
+                                                alt=""></a>
                                     </div>
                                     <div class="entry-content">
                                         <div class="title-left title-style04 underline04">
                                             <h3><a
-                                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ Str::words($item->title, 15) }}</strong></a>
+                                                    href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 15)) }}</strong></a>
                                             </h3>
                                             <i
                                                 class="fa fa-clock-o"></i>{{ date('d-m-Y ', strtotime($item->created_at)) }}<span
@@ -315,7 +333,7 @@
                                         </div>
 
                                         <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
-                                                class="external-link">{{ Str::words($item->intro, 30) }}</a></p>
+                                                class="external-link">{{ Str::words($item->intro, 35) }}</a></p>
                                         <div> <a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><span
                                                     class="read-more">Continue reading</span></a> </div>
                                     </div>

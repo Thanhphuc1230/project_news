@@ -42,11 +42,17 @@
                     <select class="form-select" name="where_in">
                         {{ $new->where_in }}
                         <option value="1" {{ $new->where_in == 1 ? 'selected' : '' }}>Hot news</option>
-                        <option value="2" {{ $new->where_in == 2 ? 'selected' : '' }}>Tin thế giới</option>
-                        <option value="3" {{ $new->where_in == 3 ? 'selected' : '' }}>Thời sự</option>
-                        <option value="4" {{ $new->where_in == 4 ? 'selected' : '' }}>Công nghệ</option>
-                        <option value="5" {{ $new->where_in == 5 ? 'selected' : '' }}>Sức khỏe</option>
-                        <option value="6" {{ $new->where_in == 6 ? 'selected' : '' }}>Du lịch</option>
+                        <option value="2" {{ $new->where_in == 2 ? 'selected' : '' }}>Tin thời sự</option>
+                        <option value="3" {{ $new->where_in == 3 ? 'selected' : '' }}>Tin thế giới</option>
+                        <option value="4" {{ $new->where_in == 4 ? 'selected' : '' }}>Tin pháp luật</option>
+                        <option value="5" {{ $new->where_in == 5 ? 'selected' : '' }}>Tin kinh doanh</option>
+                        <option value="6" {{ $new->where_in == 6 ? 'selected' : '' }}>Tin công nghệ</option>
+                        <option value="7" {{ $new->where_in == 7 ? 'selected' : '' }}>Tin du lịch</option>
+                        <option value="8" {{ $new->where_in == 8 ? 'selected' : '' }}>Tin văn hóa</option>
+                        <option value="9" {{ $new->where_in == 9 ? 'selected' : '' }}>Tin giải trí</option>
+                        <option value="10" {{ $new->where_in == 10 ? 'selected' : '' }}>Tin thể thao</option>
+                        <option value="11" {{ $new->where_in == 11 ? 'selected' : '' }}>Tin sức khỏe</option>
+                        <option value="0" {{ $new->where_in == 0 ? 'selected' : '' }}>Không lên trang chính</option>
                     </select>
                 </div>
                 <div class="mb-3">

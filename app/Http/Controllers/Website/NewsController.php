@@ -91,6 +91,23 @@ class NewsController extends Controller
         ->get();
         //count comment of post
         $data['count_comments']= Comment::where('post_id_comment', $uuid)->where('status_comment',1)->count();
+
+        //make history for user
+        
+        if(Auth::user()){
+            $result =  DB::table('history')->where('id_post',$uuid)->where('user_id',Auth::user()->uuid)->first();
+            if(!$result){
+                $history_user = [
+                    'uuid' => Str::uuid(),
+                    'id_post' => $uuid,
+                    'user_id' => Auth::user()->uuid,
+                    'status_history' => 1,
+                    'created_at' =>now()
+                ];
+                DB::table('history')->insert($history_user);
+            }
+        }
+        
         return view('website.modules.new.detail', $data);
     }
 

@@ -1,5 +1,6 @@
-@include('website.partials.head')
-@include('website.partials.header')
+@extends('website.master')
+@section('module','Không tìm thấy trang')
+@section('content')
 <section id="main-section">
     <!--========== BEGIN .CONTAINER ==========-->
     <div class="container">
@@ -27,4 +28,4 @@
     </div>
     <!-- End .Error 404 -->
 </section>
-@include('website.partials.footer')
+@endsection

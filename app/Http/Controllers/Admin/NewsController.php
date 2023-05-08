@@ -21,6 +21,11 @@ class NewsController extends Controller
         ->where('id_category','>',1) 
         ->where('status_cate',1)
         ->get();
+        $data['select_where_in'] = Category::select('id_category', 'name_cate','parent_id')
+        ->where('id_category','>',1) 
+        ->where('status_cate',1)
+        ->where('parent_id',1)
+        ->get();
         $data['news'] = DB::table('news')
                 ->join('categories', 'news.category_id', '=', 'categories.id_category')
                 ->select('news.*', 'categories.name_cate')
