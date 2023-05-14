@@ -29,7 +29,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('login/css/util.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('login/css/main.css') }}">
-
+    <script src="https://kit.fontawesome.com/9d4570d54a.js" crossorigin="anonymous"></script>
     <meta name="robots" content="noindex, follow">
     <script nonce="53788f33-0d28-4379-83c9-c19a668fa5be">
         (function(w, d) {

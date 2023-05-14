@@ -53,7 +53,7 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" id="sidenav-toggle"> <span
                         class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-                <div class="sidenav-header-logo"><a href="index.html"><img src="{{ asset('website/img/logo.png') }} "
+                <div class="sidenav-header-logo"><a href="{{ route('website.index') }}"><img src="{{ asset('website/img/logo.png') }} "
                             alt="Site Logo" />
                         <h2>24h <span>News</span></h2>
                         <h5>Your 24h News Source</h5>
@@ -73,9 +73,14 @@
                     <li class="active"><a href="{{ route('website.index') }}">Home</a></li>
                     @foreach ($new_header as $item)
                         <li><a
-                                href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item->id_category]) }}">{{ $item->name_cate }}</a>
+                                href="{{ route('website.category_news', ['name_cate' => Str::of($item->name_cate)->slug('-'), 'uuid' => $item->uuid]) }}">{{ $item->name_cate }}</a>
                         </li>
                     @endforeach
+                    @if (Auth::user())
+                        <li><a href="{{route('website.profile',['uuid'=>Auth::user()->uuid])}}">Profile</a></li>
+                    @else
+                        <li><a href="{{ route('getLogin') }}">Login</a></li>
+                    @endif
                 </ul>
             </div>
         </nav>

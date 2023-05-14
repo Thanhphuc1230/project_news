@@ -24,7 +24,8 @@
                 </div>
                 <div class="mb-3">
                     <h4 class="card-subtitle mb-2">Giới thiệu</h4>
-                    <input type="text" name="intro" class="form-control" value="{{  html_entity_decode(old('intro', $new->intro)) }}">
+                    <input type="text" name="intro" class="form-control"
+                        value="{{ html_entity_decode(old('intro', $new->intro)) }}">
                 </div>
                 <div class="mb-3">
                     <h6 class="card-subtitle mb-2">Thuộc nhóm</h6>
@@ -52,22 +53,23 @@
                         <option value="9" {{ $new->where_in == 9 ? 'selected' : '' }}>Tin giải trí</option>
                         <option value="10" {{ $new->where_in == 10 ? 'selected' : '' }}>Tin thể thao</option>
                         <option value="11" {{ $new->where_in == 11 ? 'selected' : '' }}>Tin sức khỏe</option>
-                        <option value="0" {{ $new->where_in == 0 ? 'selected' : '' }}>Không lên trang chính</option>
+                        <option value="0" {{ $new->where_in == 0 ? 'selected' : '' }}>Không lên trang chính
+                        </option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <h6 class="card-subtitle mb-2">Avatar Current</h6>
-                   
+
                     <div>
                         @php
-                    $avatar = !empty($new->avatar) ? $new->avatar : 'default.png';
-                                if (substr($avatar, 0, 8) === "https://") {
-                                    echo '<img src="'. $avatar.'" width="250px">';
-                                    } else {
-                                        echo '<img src="' . asset('images/news/'.$avatar) . '" width="250px">';
-                                    }
-                        
-                    @endphp
+                            $avatar = !empty($new->avatar) ? $new->avatar : 'default.png';
+                            if (substr($avatar, 0, 8) === 'https://') {
+                                echo '<img src="' . $avatar . '" width="250px">';
+                            } else {
+                                echo '<img src="' . asset('images/news/' . $avatar) . '" width="250px">';
+                            }
+                            
+                        @endphp
                     </div>
                 </div>
                 <div class="mb-3">
@@ -89,17 +91,24 @@
                 <div class="mb-3">
                     <div class="mb-3">
                         <h4 class="card-subtitle mb-2">Người đăng</h4>
-                        <input type="text" name="author" class="form-control" placeholder="vd: Samsung"
+                        <input type="text" class="form-control" placeholder="vd: Samsung"
+                            value="{{ old('author', $new->author) }}" disabled>
+                        <input type="hidden" name="author" class="form-control" placeholder="vd: Samsung"
                             value="{{ old('author', $new->author) }}">
                     </div>
-                    <div class="mb-3">
-                        <h6 class="card-subtitle mb-2">Trạng thái</h6>
-                        <select class="form-select" name="status">
-                            <option selected="" value="1"
-                                {{ old('status', $new->status) == 1 ? 'selected' : '' }}>Hiện</option>
-                            <option value="0" {{ old('status', $new->status) == 0 ? 'selected' : '' }}>Ẩn</option>
-                        </select>
-                    </div>
+                    @if (Auth::user()->level !== 1)
+                    @else
+                        <div class="mb-3">
+                            <h6 class="card-subtitle mb-2">Trạng thái</h6>
+                            <select class="form-select" name="status">
+                                <option selected="" value="1"
+                                    {{ old('status', $new->status) == 1 ? 'selected' : '' }}>Hiện</option>
+                                <option value="0" {{ old('status', $new->status) == 0 ? 'selected' : '' }}>Ẩn
+                                </option>
+                            </select>
+                        </div>
+                    @endif
+
 
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </div>

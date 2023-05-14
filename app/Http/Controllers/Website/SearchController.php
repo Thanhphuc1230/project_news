@@ -36,4 +36,15 @@ class SearchController extends Controller
         return view('website.modules.search.search',$data,['name'=>$title]);
     }
 
+    public function liveSearch(Request $request){
+        $search = $request->get('search');
+
+        $news = News::where('title', 'LIKE', '%'.$search.'%')
+                    ->orWhere('intro', 'LIKE', '%'.$search.'%')
+                    ->latest('created_at')
+                    ->get();
+
+        return response()->json($news);
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
     /**
@@ -13,6 +14,10 @@ class CommentController extends Controller
      */
     public function index()
     {   
+        if (Auth::user()->level !== 1) {
+            session()->flash('error_level', 'Bạn không đủ quyền truy cập');
+            return redirect()->route('admin.news.index');
+        }
         $data['comments'] = DB::table('comments')
         ->join('news', 'comments.post_id_comment', '=', 'news.uuid')
         ->join('users', 'comments.user_id_comment', '=', 'users.uuid')
@@ -25,18 +30,11 @@ class CommentController extends Controller
     /**
      * Show the form for status a new resource.
      */
-    public function unActive_news($id){
+    public function status_comment($uuid,$status){
 
-        Comment::where('uuid',$id)->update(['status_comment'=>1]);
+        Comment::where('uuid',$uuid)->update(['status_comment'=>$status]);
 
-        return redirect()->back()->with('success', 'Kích hoạt comment thành công');
-    }
-    public function active_news($id){
-
-        Comment::where('uuid',$id)->update(['status_comment'=>0]);
-
-        return redirect()->back()->with('success', 'Tắt kích hoạt comment thành công');
-
+        return redirect()->back()->with('success', 'Xét duyệt comment thành công');
     }
 
     /**

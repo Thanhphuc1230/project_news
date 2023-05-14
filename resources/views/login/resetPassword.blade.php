@@ -9,11 +9,11 @@
                 placeholder="E-mail Address" required>
         </div>
         <div class="wrap-input100 validate-input" data-validate="Enter password">
-            <input class="input100" type="password" name="password" placeholder="User name">
-            <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+            <input class="input100" type="password" name="password" placeholder="Enter password">
+            <span class="focus-input100" data-placeholder="&#xe80f;"></span>
         </div>
         <div class="wrap-input100 validate-input" data-validate="Enter password confirm">
-            <input class="input100" type="password" name="password_confirmation" placeholder="Password">
+            <input class="input100" type="password" name="password_confirmation" placeholder="Password confirm">
             <span class="focus-input100" data-placeholder="&#xe80f;"></span>
         </div>
         <div class="container-login100-form-btn m-t-32">

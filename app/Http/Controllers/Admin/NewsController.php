@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 class NewsController extends Controller
 {
      /**
@@ -17,6 +18,7 @@ class NewsController extends Controller
      */
     public function index()
     {   
+       
         $data['categories_select'] = Category::select('id_category', 'name_cate','parent_id')
         ->where('id_category','>',1) 
         ->where('status_cate',1)
@@ -26,11 +28,21 @@ class NewsController extends Controller
         ->where('status_cate',1)
         ->where('parent_id',1)
         ->get();
-        $data['news'] = DB::table('news')
-                ->join('categories', 'news.category_id', '=', 'categories.id_category')
-                ->select('news.*', 'categories.name_cate')
-                ->orderBy('categories.name_cate', 'asc')
-                ->get();
+        if(Auth::user()->level !==1){
+            $data['news'] = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id_category')
+            ->select('news.*', 'categories.name_cate')
+            ->orderBy('categories.name_cate', 'asc')
+            ->where('uuid_author',Auth::user()->uuid)
+            ->get();
+        }else{
+            $data['news'] = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id_category')
+            ->select('news.*', 'categories.name_cate')
+            ->orderBy('categories.name_cate', 'asc')
+            ->get();
+        }
+    
 
         return view('admin.modules.news.index',$data);
     }
@@ -40,25 +52,35 @@ class NewsController extends Controller
     public function store(NewsRequest $request)
     {   
         $data = $request->except('_token');
+
+        if(Auth::user()->level !== 1){
+            $data['status'] = 0;
+        }
+
         $data['created_at'] = new \DateTime(); 
         $data['uuid'] = Str::uuid();
-        
         $imageName = time().'-'.$request->avatar->getClientOriginalName();  
         $request->avatar->move(public_path('images/news'), $imageName);
         $data['avatar'] = $imageName;
         DB::table('news')->insert($data);
         
-        return redirect()->back()->with('success', 'Thêm bài viết thành công');
+        return redirect()->back()->with('success', 'Đã đăng bài viết thành công');
     }
   
     public function unactive_news($id){
-
+        if (Auth::user()->level !== 1) {
+            session()->flash('error_level', 'Bạn không đủ quyền hạn để thưc hiện');
+            return redirect()->route('admin.news.index');
+        }
         News::where('uuid',$id)->update(['status'=>1]);
 
         return redirect()->back()->with('success', 'Kích hoạt sản phẩm thành công');
     }
     public function active_news($id){
-
+        if (Auth::user()->level !== 1) {
+            session()->flash('error_level', 'Bạn không đủ quyền hạn để thưc hiện');
+            return redirect()->route('admin.news.index');
+        }
         News::where('uuid',$id)->update(['status'=>0]);
 
         return redirect()->back()->with('success', 'Tắt kích hoạt sản phẩm thành công');
@@ -93,7 +115,6 @@ class NewsController extends Controller
         $data = $request->except('_token');
 
         $data['updated_at'] = new \DateTime();
-
         if (empty($request->avatar)) {
             $data['avatar'] = $new_current->avatar; 
             

@@ -15,6 +15,7 @@ use App\Http\Controllers\Website\ProfileController;
 use App\Http\Controllers\Website\SearchController;
 
 use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\Login\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,11 +37,16 @@ Route::fallback(function () {
 
 
 Route::get('verify/{uuid}', [LoginController::class, 'verify'])->name('verify');
-
+Route::get('/verify_email/{token}', [ProfileController::class, 'verifyEmail'])->name('verifyEmail');
 
 //Login
 Route::get('/get_login', [LoginController::class, 'getLogin'])->name('getLogin');
 Route::post('/post_login', [LoginController::class, 'postLogin'])->name('postLogin');
+
+//Login with Social
+route::get('/auth/{provider}',[SocialController::class,'redirect'])->name('provider-auth');
+Route::get('auth/{provider}/call-back',[SocialController::class,'callbackSocial']);
+
 //register
 Route::get('/register', [LoginController::class, 'getRegister'])->name('getRegister');
 Route::post('/post_register', [LoginController::class, 'postRegister'])->name('postRegister');
@@ -93,8 +99,7 @@ Route::prefix('admin')->name('admin.')->middleware('check_login')->group(functio
     });
     Route::controller(CommentController::class)->prefix('comment')->name('comment.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/unActive_comment/{uuid}', 'unactive_news')->name('unactive_comment');
-        Route::get('/active_comment/{uuid}', 'active_news')->name('active_comment');
+        Route::get('/status_comment/{uuid}/{status}', 'status_comment')->name('status_comment');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{uuid}', 'edit')->name('edit');
@@ -109,9 +114,11 @@ Route::name('website.')->group(function () {
     //search 
     Route::post('/search', [SearchController::class, 'search'])->name('search');
     Route::get('/searchNow', [SearchController::class, 'searchNow'])->name('searchNow');
+    Route::get('/live_search', [SearchController::class, 'liveSearch'])->name('liveSearch');
     //Category news
-    Route::get('/category/{name_cate}/{uuid}', [HomeController::class, 'category_news'])->name('category_news');
-
+    Route::get('/the-loai/{name_cate}/{uuid}', [HomeController::class, 'category_news'])->name('category_news');
+    Route::get('/hot-news', [HomeController::class, 'hotNews'])->name('hotNews');
+    Route::post('/hot-news/load-data', [HomeController::class,'loadMoreData'])->name('load-data');
     //News
     Route::get('/detail/{uuid}', [NController::class, 'detailNew'])->name('detailNew');
     Route::post('/postComment/{uuidOfNew}', [NController::class, 'postComment'])->name('postComment');
@@ -122,9 +129,15 @@ Route::name('website.')->group(function () {
         Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
         Route::get('/delete/{uuid_history}',[ProfileController::class, 'deleteHistory'])->name('deleteHistory');
         Route::get('/edit_comment/{uuid}', [ProfileController::class, 'editComment'])->name('editComment');
+        Route::get('/delete_comment/{uuid}', [ProfileController::class, 'deleteComment'])->name('deleteComment');
         Route::post('/updated_comment/{uuid}', [ProfileController::class, 'updatedComment'])->name('updatedComment');
         Route::post('/updated_profile/{uuid}', [ProfileController::class, 'updatedProfile'])->name('updatedProfile');
         Route::post('/updated_password/{uuid}', [ProfileController::class, 'updatedPassword'])->name('updatedPassword');
+        Route::post('/updated_email/{uuid}', [ProfileController::class, 'updatedEmail'])->name('updatedEmail');
+        Route::post('/save_post/{uuid}', [NController::class, 'savePost'])->name('savePost');
+        Route::get('/delete_save_post/{uuid_save_post}', [ProfileController::class, 'deleteSavePost'])->name('deleteSavePost');
+
+        Route::get('/user_logout', [ProfileController::class, 'logout'])->name('logout');
     });
    
 });

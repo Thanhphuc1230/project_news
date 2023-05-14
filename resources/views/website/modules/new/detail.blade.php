@@ -45,8 +45,7 @@
                                     <div class="post-meta-comments"> <i class="fas fa-eye"></i>
                                         {{ $detail_new->new_view }} views
                                     </div>
-                                    <button class="btn btn-primary btn-black" onclick="location.href='/save'">Save
-                                      </button>
+                                
                                 </div>
                             </div>
                             <div class="entry-main">
@@ -58,6 +57,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="post-meta-comments">
+                            <form  action="{{ route('website.savePost', ['uuid' => $detail_new->uuid]) }}" method="post">
+                                @csrf
+                            <button class="btn btn-primary btn-black" type="submit" >Lưu bài viết
+                              </button>
+                            </form>
+                        </div>
+                        <div class="comment-section">
+                            <h4>Chia sẻ bài viết</h4>
+                        <div class="social-btn-sp">
+                            {!! $shareButtons !!}
+                        </div> 
+                        </div>
+                        
                         <!--  End .post -->
 
                         <!--  Begin .comment-section -->
@@ -132,7 +145,7 @@
                             <h3><strong>Tin tức nổi bật</strong> </h3>
                         </div>
                         <!-- End .title-style02 -->
-                        <div class="sidebar-post">
+                        <div class="sidebar-post ">
                             <ul>
                                 @foreach ($news_updated as $item)
                                     <li>
@@ -140,12 +153,17 @@
                                             <div class="item-image"><a class="img-link"
                                                     href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
                                                         class="img-responsive img-full"
-                                                        src="{{ asset('images/news/' . $item->avatar) }}"
+                                                        @php if (substr($item->avatar, 0, 8) === "https://")
+                                                        {
+                                                        echo 'src="'. $item->avatar.'"';
+                                                        } else {
+                                                        echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                                        } @endphp
                                                         alt=""></a></div>
                                             <div class="item-content">
 
                                                 <p><a
-                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a>
+                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{  html_entity_decode(Str::words($item->title, 15)) }}</a>
                                                 </p>
                                                 <p><i class="fas fa-eye"></i>
                                                     {{ $item->new_view }} views</p>
@@ -179,7 +197,7 @@
                             <h3>Có thể bạn muốn đọc</h3>
                         </div>
                         <!-- End .block-title-3 -->
-                        <div class="sidebar-post">
+                        <div class="sidebar-post detail-post-you-like">
                             <ul>
                                 @foreach ($maybeYouLike as $item)
                                     <li>
@@ -187,11 +205,16 @@
                                             <div class="item-image"><a class="img-link"
                                                     href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
                                                         class="img-responsive img-full"
-                                                        src="{{ asset('images/news/' . $item->avatar) }}"
+                                                        @php if (substr($item->avatar, 0, 8) === "https://")
+                                                        {
+                                                        echo 'src="'. $item->avatar.'"';
+                                                        } else {
+                                                        echo 'src="' . asset('images/news/'.$item->avatar) . '" ';
+                                                        } @endphp
                                                         alt=""></a></div>
                                             <div class="item-content">
                                                 <p><a
-                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a>
+                                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}">{{  html_entity_decode(Str::words($item->title, 15)) }}</a>
                                                 </p>
                                             </div>
                                         </div>
@@ -199,47 +222,6 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <!--========== END .SIDEBAR-REVIEWS ==========-->
-
-                        <!--========== BEGIN #SIDEBAR-NEWSLETTER ==========-->
-                        <div id="sidebar-newsletter">
-                            <!-- Begin .title-style01 -->
-                            <div class="title-style01">
-                                <h3><strong>Newsletter</strong></h3>
-                            </div>
-                            <!-- End .title-style01 -->
-                            <!-- Begin .sidebar-newsletter-form -->
-                            <div class="sidebar-newsletter-form">
-                                <form class="form-horizontal" action="http://24hnews.via-theme.com/include/subscribe.php"
-                                    id="subscribeForm" method="POST">
-                                    <div class="input-group">
-                                        <input title="Newsletter" class="form-control" name="email" type="email"
-                                            id="address" placeholder="Enter Your Email Address"
-                                            data-validate="validate(required, email)" required="">
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-success">Subscribe</button>
-                                        </span>
-                                    </div>
-                                </form>
-                                <span id="result" class="alertMsg"></span>
-                            </div>
-                            <!-- End .sidebar-newsletter-form -->
-                        </div>
-                        <!--========== END #SIDEBAR-NEWSLETTER ==========-->
-                        <!--========== BEGIN #SIDEBAR-SOCIAL-BUTTONS ==========-->
-                        <div id="sidebar-social-icons">
-                            <ul class="sidebar-social-icons">
-                                <li> <a href="#" class="facebook"><i class="fa fa-facebook"></i></a> </li>
-                                <li> <a href="#" class="youtube"><i class="fa fa-youtube"></i></a> </li>
-                                <li> <a href="#" class="twitter"><i class="fa fa-twitter"></i></a> </li>
-                                <li> <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a> </li>
-                                <li> <a href="#" class="pinterest"><i class="fa fa-pinterest"></i></a> </li>
-                                <li> <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a> </li>
-                                <li> <a href="#" class="rss"><i class="fa fa-rss"></i></a> </li>
-                                <li> <a href="#" class="tumblr"><i class="fa fa-tumblr"></i></a> </li>
-                            </ul>
-                        </div>
-                        <!--========== END #SIDEBAR-SOCIAL-BUTTONS ==========-->
                     </div>
                     <!--========== END .COL-MD-4 ==========-->
                 </div>
@@ -348,4 +330,5 @@
         </section>
         <!--========== END .MODULE ==========-->
     </div>
+    @include('website.partials.copyrights')
 @endsection

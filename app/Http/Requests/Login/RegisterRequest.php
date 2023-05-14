@@ -22,8 +22,6 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fullname' => 'required',
-
             'email' => request()->route('id') 
                     ? 'required|email|unique:users,email,'.request()->route('id')
                     : 'required|email|unique:users',
@@ -37,8 +35,6 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'fullname.required' => 'Vui lòng nhập Họ và tên ',
-
             'email.required' => 'Vui lòng nhập email',
             'email.unique' => 'Email này đã tồn tại rồi',
             'email.email' => 'Đây không phải là email',

@@ -94,13 +94,22 @@
                                                 })
                                             </script>
                                         </div>
-
                                         <div class="white_card_body">
                                             <div class="mb-3">
                                                 <h4 class="card-subtitle mb-2">Người đăng</h4>
+                                                @if(Auth::user()->level !== 1)
+                                                    <input type="hidden"  class="form-control" name="author"
+                                                     value="{{Auth::user()->fullname}}">
+                                                    <input type="text"  class="form-control"
+                                                     value="{{Auth::user()->fullname}}" disabled>
+                                                     <input type="hidden" name="uuid_author" value="{{Auth::user()->uuid}}">
+                                                @else
                                                 <input type="text" name="author" class="form-control"
                                                     placeholder="vd: Samsung" value="{{old('author')}}">
+                                                @endif
                                             </div>
+                                            @if(Auth::user()->level !==1)
+                                            @else
                                             <div class="mb-3">
                                                 <h6 class="card-subtitle mb-2">Trạng thái</h6>
                                                 <select class="form-select" name="status">
@@ -108,6 +117,8 @@
                                                     <option value="0">Ẩn</option>
                                                 </select>
                                             </div>
+                                            @endif
+                                         
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>

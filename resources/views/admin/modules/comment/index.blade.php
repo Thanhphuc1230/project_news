@@ -8,9 +8,8 @@
         <div class="white_card_body">
             <div class="QA_section">
                 <div class="white_box_tittle list_header">
-                    <h3>Comment list</h3>
+                    <h3>Danh sách comment</h3>
                 </div>
-            
                 <div class="QA_table mb_30">
                     <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper no-footer">
                         <table class="table dataTable no-footer dtr-inline" id='my-table' role="grid"
@@ -49,23 +48,11 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->comment }}</td>
                                         <td>
-                                            @php
-                                            if($item->status_comment == 0){
-                                            @endphp
-                                            <a onclick="return confirm('Xác nhận kích hoạt comment ?')"
-                                                href="{{ route('admin.comment.unactive_comment',['uuid' => $item->uuid]) }} "
-                                                class="status_btn" style="background:#FA8072!important">Unactive</a>
-                                            @php
-                                            }else{
-                                            @endphp
-        
-                                            <a onclick="return confirm('Xác nhận tắt kích hoạt comment?')"
-                                                href=" {{ route('admin.comment.active_comment',['uuid' => $item->uuid]) }}"
-                                                class="status_btn">Active</a>
-                                            @php
-                                            }
-                                            @endphp
-        
+                                            <select id="my-select">
+                                                <option value="1" data-href="{{route('admin.comment.status_comment',['uuid'=>$item->uuid,'status' => 1])}}"  {{ old('status_comment', $item->status_comment) == 1 ? 'selected' : '' }}>Duyệt</option>
+                                                <option value="2" data-href="{{route('admin.comment.status_comment',['uuid'=>$item->uuid,'status' => 0])}}"  {{ old('status_comment', $item->status_comment) == 0 ? 'selected' : '' }}>Tắt</option>
+                                                <option value="3" data-href="{{route('admin.comment.status_comment',['uuid'=>$item->uuid,'status' => 2])}}"  {{ old('status_comment', $item->status_comment) == 2 ? 'selected' : '' }}>Chặn</option>
+                                              </select>
                                         </td>
                                         <td>{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
 

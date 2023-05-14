@@ -11,3 +11,8 @@
         </form>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="search-results"></div>
+    </div>
+</div>

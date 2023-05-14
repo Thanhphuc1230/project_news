@@ -57,6 +57,7 @@ class CrawlerController extends Controller
                 'intro' => $intro,
                 'avatar' => $img_src,
                 'author' => 'Tuoi Tre',
+                'uuid_author' => '7555d214-5b5e-4b23-b440-86746ae05851',
                 'status' => 0,
                 'new_view' => 0,
                 'where_in' => $where_in,
@@ -75,22 +76,22 @@ class CrawlerController extends Controller
     }
     public function featchAllTuoiTre () 
     {
-        // $result = DB::table('categories')->where('parent_id',10 )->get();
-        // foreach ($result as $item) {
-        //     $link = $item->link;
-        //     $category_id = $item->id_category;
+        $result = DB::table('categories')->where('parent_id',2 )->get();
+        foreach ($result as $item) {
+            $link = $item->link;
+            $category_id = $item->id_category;
            
-        //     if($item->parent_id == 1){
-        //         $where_in = $item->id_category;
-        //     }else{
-        //         $where_in = $item->parent_id;
-        //     }
+            if($item->parent_id == 1){
+                $where_in = $item->id_category;
+            }else{
+                $where_in = $item->parent_id;
+            }
 
-        //     $this->index ($category_id, $link,$where_in );
-        // }
-            $link= 'https://tuoitre.vn/kinh-doanh/tai-chinh.htm';
-            $category_id = 18;
-            $where_in = 5;
+            $this->index ($category_id, $link,$where_in );
+        }
+            // $link= 'https://tuoitre.vn/kinh-doanh/tai-chinh.htm';
+            // $category_id = 18;
+            // $where_in = 5;
 
         $this->index ($category_id, $link,$where_in );
     }

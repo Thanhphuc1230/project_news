@@ -87,6 +87,9 @@
                 </div>
                 <!--========== END .NEWS ==========-->
             </div>
+            <div class="col-md-12 button-load-more">
+                <a href={{route('website.hotNews')}} type="button" class="btn btn-default active">Xem tin mới nhất</a>
+            </div>
             <!--========== END .COL-MD-6 ==========-->
         </div>
     </div>

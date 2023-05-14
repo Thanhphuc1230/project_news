@@ -9,13 +9,18 @@ use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
-{
+{   
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {    
+        if (Auth::user()->level !== 1) {
+            session()->flash('error_level', 'Bạn không đủ quyền truy cập');
+            return redirect()->route('admin.news.index');
+        }
         $data['categories'] = Category::select('uuid','name_cate', 'status_cate', 'created_at')->get();
         $data['category_selected'] = Category::select('id_category', 'name_cate')->where('parent_id', 1)->get();
         return view('admin.modules.category.index',$data);
@@ -57,7 +62,7 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
+    {   
         $category =Category::where('uuid', $id);
         
         if ($category->exists()) {
@@ -73,7 +78,7 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      */
     public function update(CategoryRequest $request, string $id)
-    {
+    {   
         $data = $request->except('_token');
         $data['updated_at'] = new \DateTime();
         Category::where('uuid', $id)->update($data);
@@ -86,7 +91,7 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
+    {   
         $category = Category::where('uuid', $id);
 
         if ($category->exists()) {

@@ -7,24 +7,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {   $data['users'] = User::select('uuid','fullname','email','created_at','level','status_user')->get();
-        return view('admin.modules.user.index',$data);
+    {   
+        if (Auth::user()->level !== 1) {
+            session()->flash('error_level', 'Bạn không đủ quyền truy cập');
+            return redirect()->route('admin.news.index');
+        }
+        
+        $data['users'] = User::select('uuid', 'fullname', 'email', 'created_at', 'level', 'status_user')->get();
+        return view('admin.modules.user.index', $data);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -35,27 +33,37 @@ class UserController extends Controller
         $data['created_at'] = new \DateTime();
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['status_user'] = '1';
-        $imageName = time().'-'.$request->avatar->getClientOriginalName();  
+        $imageName = time() . '-' . $request->avatar->getClientOriginalName();
         $request->avatar->move(public_path('images/users'), $imageName);
         $data['avatar'] = $imageName;
 
         User::insert($data);
 
-        return redirect()->back()->with('success', 'Thêm thành viên thành công');
+        return redirect()
+            ->back()
+            ->with('success', 'Thêm thành viên thành công');
     }
 
-    public function active_user($id){
+    public function active_user($id)
+    {
+        DB::table('users')
+            ->where('uuid', $id)
+            ->update(['status_user' => 0]);
 
-        DB::table('users')->where('uuid',$id)->update(['status_user' => 0]);
+        return redirect()
+            ->back()
+            ->with('success', 'Người dùng đã bị chặn đăng nhập');
+    }
+    public function unactive_user($id)
+    {
+        DB::table('users')
+            ->where('uuid', $id)
+            ->update(['status_user' => 1]);
 
-        return redirect()->back()->with('success', 'Người dùng đã bị chặn đăng nhập');
-     }
-     public function unactive_user($id){
- 
-        DB::table('users')->where('uuid',$id)->update(['status_user' => 1]);
-
-        return redirect()->back()->with('success', 'Người dùng được hoạt động');
-     }
+        return redirect()
+            ->back()
+            ->with('success', 'Người dùng được hoạt động');
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -64,7 +72,7 @@ class UserController extends Controller
         $user = User::where('uuid', $id);
         if ($user->exists()) {
             $data['user'] = $user->first();
-            return view('admin.modules.user.edit',$data);
+            return view('admin.modules.user.edit', $data);
         } else {
             abort(404);
         }
@@ -80,26 +88,31 @@ class UserController extends Controller
         $data['updated_at'] = new \DateTime();
 
         if (empty($request->password)) {
-            $data['password'] = $user_current->password; 
+            $data['password'] = $user_current->password;
         } else {
-            $request->validate([
-                'password' => 'min:8'
-            ], [
-                'password.min' => 'Mật khẩu ít nhất 8 ký tự'
-            ]);
+            $request->validate(
+                [
+                    'password' => 'min:8',
+                ],
+                [
+                    'password.min' => 'Mật khẩu ít nhất 8 ký tự',
+                ],
+            );
             $data['password'] = bcrypt($request->password);
         }
         if (empty($request->avatar)) {
-            $data['avatar'] = $user_current->avatar; 
+            $data['avatar'] = $user_current->avatar;
         } else {
-            $image_path = public_path('images/users') . "/" . $user_current->avatar;
-            $imageName = time().'-'.$request->avatar->getClientOriginalName();  
+            $image_path = public_path('images/users') . '/' . $user_current->avatar;
+            $imageName = time() . '-' . $request->avatar->getClientOriginalName();
             $request->avatar->move(public_path('images/users'), $imageName);
             $data['avatar'] = $imageName;
         }
 
         User::where('uuid', $id)->update($data);
-        return redirect()->route('admin.users.index')->with('success', 'Successfully updated');
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'Successfully updated');
     }
     /**
      * Remove the specified resource from storage.

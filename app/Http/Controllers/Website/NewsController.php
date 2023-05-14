@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Comment;
+use Carbon\Carbon;
 class NewsController extends Controller
 {   
     public function getChildCategory($id_category){
@@ -30,7 +31,14 @@ class NewsController extends Controller
 
         // +1 view in database
         $news = News::where('uuid', $uuid)->firstOrFail();
-        $news->increment('new_view');
+        $time_user_log = Carbon::now();
+       
+        // Add 30 seconds to the time when the user logs in
+        $time_threshold = $time_user_log->copy()->addSeconds(30);
+        // Check if the current time is greater than the time threshold
+        if (Carbon::now()->greaterThanOrEqualTo($time_threshold)) {
+            $news->increment('new_view');
+        }
         
         $data['detail_new'] = DB::table('news')
         ->join('categories', 'categories.id_category', '=', 'news.category_id')
@@ -78,8 +86,11 @@ class NewsController extends Controller
 
         $data['maybeYouLike'] = News::with('category')
         ->whereNotIn('news.uuid', $uuidOfPostInDetail)
+        ->where('category_id',$news->category_id)
+        ->OrWhere('where_in',$news->where_in)
         ->where('status', 1)
-        ->limit(7)
+        ->inRandomOrder()
+        ->limit(20)
         ->get();
         //show comments
         $data['comments_user'] =DB::table('comments')
@@ -92,8 +103,18 @@ class NewsController extends Controller
         //count comment of post
         $data['count_comments']= Comment::where('post_id_comment', $uuid)->where('status_comment',1)->count();
 
+          // Share button 
+          $data['shareButtons'] = \Share::page(
+            url(route('website.detailNew', ['uuid' => $uuid]))
+            )
+            ->facebook()
+            ->twitter()
+            ->linkedin()
+            ->telegram()
+            ->whatsapp() 
+            ->reddit();
+
         //make history for user
-        
         if(Auth::user()){
             $result =  DB::table('history')->where('id_post',$uuid)->where('user_id',Auth::user()->uuid)->first();
             if(!$result){
@@ -128,5 +149,30 @@ class NewsController extends Controller
         DB::table('comments')->insert($data);
 
         return back()->with('success', 'Đã thêm comment thành công, chúng tôi sẽ xem xét comment của bạn');
+    }
+
+    public function savePost($uuid_post){
+        $post_save=DB::table('save_post')
+        ->where('id_post',$uuid_post)
+        ->where('user_id',Auth::user()->uuid)
+        ->count();
+        if(!Auth::user()){
+            return back()->with('error', 'Vui lòng đăng nhập để sử dụng chức năng này');
+        }else{
+            if($post_save == 0){
+                $data = [
+                    'uuid' => Str::uuid(),
+                    'id_post' =>$uuid_post,
+                    'user_id' => Auth::user()->uuid,
+                    'status_save' =>1,
+                    'created_at' => New \DateTime,
+                ];
+                DB::table('save_post')->insert($data);
+                return back()->with('success', 'Đã lưu bài viết thành công');
+            }else{
+                return back()->with('success', 'Bạn đã lưu bài viết này rồi');
+            }
+            
+        }
     }
 }

@@ -16,7 +16,7 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->level == 1) {
+        if (Auth::check() && (Auth::user()->level == 1 || Auth::user()->level == 2 )) {
             return $next($request);
          }
          return response()->view('website.modules.error.index', [], 404);
