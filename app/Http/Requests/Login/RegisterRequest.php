@@ -27,8 +27,8 @@ class RegisterRequest extends FormRequest
                     : 'required|email|unique:users',
 
             'password' => request()->route('id') 
-                    ? 'confirmed' 
-                    : 'required|confirmed|min:8',
+            ? 'confirmed' 
+            : 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
 
         ];
     }
@@ -42,6 +42,7 @@ class RegisterRequest extends FormRequest
             'password.required' => 'Vui lòng nhập mật khẩu',
             'password.confirmed' => 'Mật khẩu xác nhận không chính xác',
             'password.min'  => 'Mật khẩu ít nhất 8 ký tự',
+            'password.regex' => 'Mật khẩu phải có cả chữ và số',
     
         ];
     }

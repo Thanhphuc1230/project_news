@@ -44,18 +44,11 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Successful category create.');
     }
 
-    public function unactive_categories($id){
-
-        Category::where('uuid',$id)->update(['status_cate'=>1]);
+    public function status_categories($uuid,$status){
+      
+        Category::where('uuid',$uuid)->update(['status_cate'=>$status]);
 
         return redirect()->back()->with('success', 'Kích hoạt sản phẩm thành công');
-    }
-    public function active_categories($id){
-        
-        Category::where('uuid',$id)->update(['status_cate'=>0]);
-
-        return redirect()->back()->with('success', 'Tắt kích hoạt sản phẩm thành công');
-
     }
 
     /**

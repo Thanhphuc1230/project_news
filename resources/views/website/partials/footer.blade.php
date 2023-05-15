@@ -1,5 +1,3 @@
-
-
 <!-- External JavaScripts -->
 <script src="{{ asset('website/js/jquery-3.1.1.min.js ') }} "></script>
 <script src="{{ asset('website/js/bootstrap.min.js ') }} "></script>
@@ -29,18 +27,24 @@
                 },
                 success: function(data) {
                     $results.empty();
-                    $.each(data, function(key, news) {
-                        var imgSrc = (news.avatar.startsWith('https://')) ? news
-                            .avatar : '{{ asset('images/news/') }}/' + news.avatar;
-                        $('.search-results').append(
-                            '<div class="search-result" style="padding-bottom: 5px;">' +
-                            '<a  href="' + url + '/' + news.uuid + '"><img  src="' + imgSrc +
-                            '" height="50px" width ="60px"> </a>' +
-                            '&nbsp&nbsp<a href="' + url + '/' + news.uuid + '">' + news
-                            .title + '</a>' +
-                            '</div>'
-                        );
-                    });
+                    if (data.length === 0) {
+                        $results.append('<div class="search-result">Không tìm thấy bài viết</div>');
+                    } else {
+                        $.each(data, function(key, news) {
+                            var imgSrc = (news.avatar.startsWith('https://')) ? news
+                                .avatar : '{{ asset('images/news/') }}/' + news.avatar;
+                            $('.search-results').append(
+                                '<div class="search-result" style="padding-bottom: 5px;">' +
+                                '<a  href="' + url + '/' + news.uuid +
+                                '"><img  src="' + imgSrc +
+                                '" height="50px" width ="60px"> </a>' +
+                                '&nbsp&nbsp<a href="' + url + '/' + news.uuid +
+                                '">' + news
+                                .title + '</a>' +
+                                '</div>'
+                            );
+                        });
+                    }
 
                     $results.toggleClass('active', Boolean(search));
                 }
@@ -80,6 +84,7 @@
 
     });
 </script>
+
 
 </body>
 

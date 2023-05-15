@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'phone' => '0123456789',
             'email' => 'admin@gmail.com',
             'email_verified_at' =>$now,
-            'password' => Hash::make('admin123'),
+            'password' => Hash::make('@admin123'),
             'level' => '1',
             'avatar' => null,
             'created_at' => $now,

@@ -24,10 +24,10 @@
                                         aria-label="Category: activate to sort column ascending">Bài viết</th>
                                     <th scope="col" class="sorting" tabindex="0" aria-controls="DataTables_Table_1"
                                         rowspan="1" colspan="1" style="width: 133px;"
-                                        aria-label="Category: activate to sort column ascending">Comment</th>
+                                        aria-label="Category: activate to sort column ascending">Email Comment</th>
                                         <th scope="col" class="sorting" tabindex="0" aria-controls="DataTables_Table_1"
                                         rowspan="1" colspan="1" style="width: 133px;"
-                                        aria-label="Category: activate to sort column ascending">Email Comment</th>
+                                        aria-label="Category: activate to sort column ascending"> Comment</th>
                                         <th scope="col" class="sorting" tabindex="0" aria-controls="DataTables_Table_1"
                                         rowspan="1" colspan="1" style="width: 127px;"
                                         aria-label="Lesson: activate to sort column ascending">Status</th>
@@ -44,15 +44,26 @@
                                 <tr role="row" class="odd">
                                     @foreach ($comments as $item)
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->title }}</td>
+                                        <td>{{ html_entity_decode(Str::words($item->title, 15))}}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->comment }}</td>
                                         <td>
-                                            <select id="my-select">
-                                                <option value="1" data-href="{{route('admin.comment.status_comment',['uuid'=>$item->uuid,'status' => 1])}}"  {{ old('status_comment', $item->status_comment) == 1 ? 'selected' : '' }}>Duyệt</option>
-                                                <option value="2" data-href="{{route('admin.comment.status_comment',['uuid'=>$item->uuid,'status' => 0])}}"  {{ old('status_comment', $item->status_comment) == 0 ? 'selected' : '' }}>Tắt</option>
-                                                <option value="3" data-href="{{route('admin.comment.status_comment',['uuid'=>$item->uuid,'status' => 2])}}"  {{ old('status_comment', $item->status_comment) == 2 ? 'selected' : '' }}>Chặn</option>
-                                              </select>
+                                            @php
+                                            if($item->status_comment == 0){
+                                            @endphp
+                                            <a onclick="return confirm('Xác nhận kích hoạt nhãn hàng ?')"
+                                                href="{{ route('admin.comment.status_comment',['uuid' => $item->uuid,'status'=>1]) }} "
+                                                class="status_btn" style="background:#FA8072!important">Unactive</a>
+                                            @php
+                                            }else{
+                                            @endphp
+        
+                                            <a onclick="return confirm('Xác nhận tắt kích hoạt nhãn hàng ?')"
+                                                href=" {{ route('admin.comment.status_comment',['uuid' => $item->uuid,'status'=>0]) }}"
+                                                class="status_btn">Active</a>
+                                            @php
+                                            }
+                                            @endphp
                                         </td>
                                         <td>{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
 

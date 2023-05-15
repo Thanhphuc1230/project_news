@@ -32,8 +32,8 @@ class UserRequest extends FormRequest
             : 'required|max:255|unique:users,email',
 
             'password' => request()->route('uuid') 
-                    ? 'confirmed' 
-                    : 'required|confirmed|min:8',
+            ? 'confirmed' 
+            : 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
 
             'avatar' => request()->route('uuid')
                     ? 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -45,11 +45,8 @@ class UserRequest extends FormRequest
     {
         return [
             'fullname.required' => 'Vui lòng nhập Họ và tên ',
-            
 
             'phone.required' => 'Vui lòng nhập SĐT của bạn',
-           
-
             
             'email.required' => 'Vui lòng nhập email',
             'email.unique' => 'Email này đã tồn tại rồi',
@@ -58,6 +55,7 @@ class UserRequest extends FormRequest
             'password.required' => 'Vui lòng nhập mật khẩu',
             'password.confirmed' => 'Mật khẩu xác nhận không chính xác',
             'password.min'  => 'Mật khẩu ít nhất 8 ký tự',
+            'password.regex' => 'Mật khẩu phải có cả chữ và số',
             
             'avatar.required' => 'Vui lòng nhập hình đại diện',
             'avatar.mimes' => 'Hình đại diện phải là các loại png,bmp,jpg'

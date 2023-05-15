@@ -76,7 +76,7 @@ class CrawlerController extends Controller
     }
     public function featchAllTuoiTre () 
     {
-        $result = DB::table('categories')->where('parent_id',2 )->get();
+        $result = DB::table('categories')->where('parent_id','!=',0 )->get();
         foreach ($result as $item) {
             $link = $item->link;
             $category_id = $item->id_category;
@@ -89,10 +89,10 @@ class CrawlerController extends Controller
 
             $this->index ($category_id, $link,$where_in );
         }
-            // $link= 'https://tuoitre.vn/kinh-doanh/tai-chinh.htm';
-            // $category_id = 18;
-            // $where_in = 5;
+            // $link= 'https://tuoitre.vn/suc-khoe/dinh-duong.htm';
+            // $category_id = 34;
+            // $where_in = 11;
 
-        $this->index ($category_id, $link,$where_in );
+        // $this->index ($category_id, $link,$where_in );
     }
 }

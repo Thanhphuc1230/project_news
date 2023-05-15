@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid();
             $table->string('id_post');
             $table->string('user_id');
-            $table->tinyInteger('status_history');
+            $table->unsignedTinyInteger('status_history');
             $table->timestamps();
         });
     }

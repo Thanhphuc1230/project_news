@@ -29,11 +29,9 @@ use App\Http\Controllers\Login\SocialController;
 */
 
 
-Route::fallback(function () {
-    return response()->view('website.modules.error.index', [], 404);
-});
-//website
-
+// Route::fallback(function () {
+//     return response()->view('website.modules.error.index', [], 404);
+// });
 
 
 Route::get('verify/{uuid}', [LoginController::class, 'verify'])->name('verify');
@@ -64,8 +62,7 @@ Route::prefix('admin')->name('admin.')->middleware('check_login')->group(functio
     Route::controller(CategoryController::class)->prefix('categories')->name('categories.')->group(
         function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/unactive_categories/{uuid}', 'unactive_categories')->name('unactive_categories');
-            Route::get('/active_categories/{uuid}', 'active_categories')->name('active_categories');
+            Route::get('/status_categories/{uuid}/{status}', 'status_categories')->name('status_categories');
             Route::get('/create', 'create')->name('create');
             Route::post('/store', 'store')->name('store');
             Route::get('/edit/{uuid}', 'edit')->name('edit');
@@ -76,8 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware('check_login')->group(functio
     Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
-        Route::get('/unactive_user/{id}', 'unactive_user')->name('unactive_user');
-        Route::get('/active_user/{id}', 'active_user')->name('active_user');
+        Route::get('/status_user/{uuid}/{status}', 'status_user')->name('status_user');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{uuid}', 'edit')->name('edit');
         Route::post('/update/{uuid}', 'update')->name('update');
@@ -88,8 +84,7 @@ Route::prefix('admin')->name('admin.')->middleware('check_login')->group(functio
 
     Route::controller(NewsController::class)->prefix('news')->name('news.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/unactive_news/{uuid}', 'unactive_news')->name('unactive_news');
-        Route::get('/active_news/{uuid}', 'active_news')->name('active_news');
+        Route::get('/status_news/{uuid}/{status}', 'status_news')->name('status_news');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{uuid}', 'edit')->name('edit');
@@ -117,6 +112,7 @@ Route::name('website.')->group(function () {
     Route::get('/live_search', [SearchController::class, 'liveSearch'])->name('liveSearch');
     //Category news
     Route::get('/the-loai/{name_cate}/{uuid}', [HomeController::class, 'category_news'])->name('category_news');
+    Route::post('/the-loai/{name_cate}/{uuid}/load-data', [HomeController::class,'loadMoreCategory'])->name('load-data-category');
     Route::get('/hot-news', [HomeController::class, 'hotNews'])->name('hotNews');
     Route::post('/hot-news/load-data', [HomeController::class,'loadMoreData'])->name('load-data');
     //News

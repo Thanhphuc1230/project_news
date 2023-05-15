@@ -19,10 +19,10 @@ return new class extends Migration
             $table->text('intro');
             $table->text('content');
             $table->string('author');
-            $table->tinyInteger('status');
-            $table->tinyInteger('where_in');
+            $table->unsignedTinyInteger('status');
+            $table->unsignedTinyInteger('where_in');
             $table->unsignedBigInteger('category_id');
-            $table->integer('views')->default(0);
+            $table->unsignedInteger('views')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

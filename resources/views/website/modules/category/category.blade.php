@@ -70,8 +70,8 @@
                     <!--========== BEGIN .SIDEBAR-NEWSFEED ==========-->
                     <div class="sidebar-newsfeed">
                         <!-- Begin .newsfeed -->
-                        <div class="newsfeed-6" style="position: relative; height: 840px; overflow: hidden;">
-                            <ul style="margin: 0px; position: absolute; top: 0px;">
+                        <div class="newsfeed-3" >
+                            <ul >
                                 @foreach ($boot_new['most_views'] as $item)
                                     <li style="margin: 0px;">
                                         <div class="item">
@@ -101,100 +101,13 @@
                     </div>
                     <!--========== END .SIDEBAR-NEWSFEED =========-->
                 </div>
+                <div class="col-md-12">
+                    {!! $new_top->links() !!}
+                </div>
                 <!--========== END.COL-MD-4 ==========-->
             </div>
         </div>
     </section>
-
-
-    <!--========== BEGIN .MODULE ==========-->
-    <section class="module highlight">
-        <div class="container">
-            <div class="row no-gutter">
-                <!--========== BEGIN .COL-MD-6 ==========-->
-
-                <div class="col-sm-6 col-md-6">
-                    <!--========== BEGIN .NEWS ==========-->
-                    <div class="news">
-                        <!-- Begin .item -->
-                        @foreach ($new_mid_left as $item)
-                            <div class="item">
-                                <div class="item-image-1"><a class="img-link"
-                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                            class="img-responsive img-full"
-                                            @php if (substr($item->avatar, 0, 8) === "https://") {
-                                                echo 'src="'. $item->avatar.'" ';
-                                                } else {
-                                                    echo ' src="' . asset('images/news/'.$item->avatar) . '" ';
-                                                } @endphp alt=""></a><span><a
-                                            class="label-1"
-                                            href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->uuid]) }}">{{ $item['category']->name_cate }}</a></span>
-                                </div>
-                                <div class="item-content">
-                                    <div class="title-left title-style04 underline04">
-                                        <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 12)) }}</strong>
-                                            </a></h3>
-                                    </div>
-                                    <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
-                                            class="external-link">{{ Str::words($item->intro, 12) }}</a>
-                                    </p>
-
-                                    <div><a href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->uuid]) }}"
-                                            target="_blank"><span
-                                                class="read-more">{{ $item['category']->name_cate }}</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                        <!-- End .item -->
-
-                    </div>
-                    <!--========== END .NEWS ==========-->
-                </div>
-                <!--========== END .COL-MD-6 ==========-->
-                <!--========== BEGIN .COL-MD-6 ==========-->
-                <div class="col-sm-6 col-md-6">
-                    <!--========== BEGIN .NEWS==========-->
-                    <div class="news">
-                        <!-- Begin .item-->
-                        @foreach ($new_mid_right as $item)
-                            <div class="item">
-                                <div class="item-image-1"><a class="img-link"
-                                        href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><img
-                                            class="img-responsive img-full"
-                                            @php if (substr($item->avatar, 0, 8) === "https://") {
-                                                echo 'src="'. $item->avatar.'" ';
-                                                } else {
-                                                    echo ' src="' . asset('images/news/'.$item->avatar) . '" ';
-                                                } @endphp alt=""></a><span><a
-                                            class="label-1"
-                                            href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->uuid]) }}">{{ $item['category']->name_cate }}</a></span>
-                                </div>
-                                <div class="item-content">
-                                    <div class="title-left title-style04 underline04">
-                                        <h3><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"><strong>{{ html_entity_decode(Str::words($item->title, 12)) }}</strong>
-                                            </a></h3>
-                                    </div>
-                                    <p><a href="{{ route('website.detailNew', ['uuid' => $item->uuid]) }}"
-                                            class="external-link">{{ Str::words($item->intro, 12) }}</a>
-                                    </p>
-
-                                    <div><a href="{{ route('website.category_news', ['name_cate' => Str::of($item['category']->name_cate)->slug('-'), 'uuid' => $item['category']->uuid]) }}"
-                                            target="_blank"><span
-                                                class="read-more">{{ $item['category']->name_cate }}</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End .item-->
-                        @endforeach
-                    </div>
-                    <!--========== END .NEWS ==========-->
-                </div>
-                <!--========== END .COL-MD-6 ==========-->
-            </div>
-        </div>
-    </section>
-    <!--========== END .MODULE ==========-->
     <!--========== BEGIN .MODULE ==========-->
     <section class="module">
         <div class="container">
@@ -206,7 +119,7 @@
                         <div class="module-title">
                             <h3 class="title"><span class="bg-11">Tin cùng chuyên đề</span></h3>
                         </div>
-                        @foreach ($new_mid as $item)
+                        @foreach ($newOfSameTopic as $item)
                             <!-- Begin .item-->
                             <div class="item">
                                 <div class="item-image-2"><a class="img-link"
@@ -289,4 +202,5 @@
         </div>
     </section>
     @include('website.partials.boot_new')
+    @include('website.partials.copyrights')
 @endsection

@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,11 +21,18 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        View::composer('*', function ($view) {
-            $uuid = last(request()->segments());
-            $id = DB::table('categories')->where('uuid', $uuid)->value('id_category');
-            
+    {   
+        Paginator::useBootstrap();
+
+        View::composer('website.*', function ($view) {
+            $uuid = request()->segment(count(request()->segments()));
+            // $check = DB::table('categories')->where('uuid', $uuid)->first();
+            // if($check->parent_id != 1){
+            //     $id = DB::table('categories')->where('uuid', $uuid)->value('parent_id');
+            // }else{
+                $id = DB::table('categories')->where('uuid', $uuid)->value('id_category');
+            // }
+          
             $mini_categories = $uuid != 0 ? Category::select('name_cate', 'id_category','uuid')->where('parent_id', $id)->get() : collect();
             
             $new_header = Category::select('name_cate', 'id_category','uuid')

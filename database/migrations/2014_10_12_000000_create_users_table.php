@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->string('fullname');
-            $table->string('phone')->nullable();
+            $table->string('phone',20)->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('provider')->nullable();
+            $table->string('provider',50)->nullable();
             $table->string('provider_id')->nullable();
             $table->tinyInteger('level')->default(3)->comment('1:Admin - 2:Staff - 3:User');
             $table->string('avatar')->nullable();
             $table->tinyInteger('status_user')->default(1);
             $table->rememberToken();
-            $table->string('email_token')->nullable();
+            $table->string('email_token',100)->nullable();
             $table->timestamps();
         });
     }

@@ -8,14 +8,14 @@
     <div class="white_card_body">
         <div class="QA_section">
             <div class="white_box_tittle list_header">
-                <h3>Category list</h3>
+                <h3>Danh sách chủ đề</h3>
             </div>
             <div class="col-lg-12">
                 <div class="white_card card_height_100 mb_30">
                     <div class="white_card_body">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
-                            Create Category
+                            Thêm chủ đề
                         </button>
                     </div>
                     @include('admin.partials.error')
@@ -42,16 +42,16 @@
                                                 <div class="white_card_header">
                                                     <div class="box_header m-0">
                                                         <div class="main-title">
-                                                            <h3 class="m-0">Category Create</h3>
+                                                            <h3 class="m-0">Thêm chủ đề</h3>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="white_card_body">
                                                     <form>
                                                         <div class="mb-3">
-                                                            <h6 class="card-subtitle mb-2">Thể loại bài viết</h6>
+                                                            <h6 class="card-subtitle mb-2">Thể loại chủ đè</h6>
                                                             <input type="text" name="name_cate" class="form-control"
-                                                                placeholder="vd: Samsung">
+                                                                placeholder="vd: Pháp luật">
                                                         </div>
                                                         <div class="mb-3">
                                                             <h6 class="card-subtitle mb-2">Chi tiết</h6>
@@ -61,7 +61,7 @@
                                                                     {{$category->name_cate}}</option>
                                                                 }
                                                                 @endforeach
-                                                                <option selected="" value="0">Nhãn hàng mới</option>
+                                                                <option selected="" value="0">Chủ đề mới</option>
                                                             </select>
                                                         </div>
                                                         <div class="mb-3">
@@ -122,14 +122,14 @@
                                     if($cate->status_cate == 0){
                                     @endphp
                                     <a onclick="return confirm('Xác nhận kích hoạt nhãn hàng ?')"
-                                        href="{{ route('admin.categories.unactive_categories',['uuid' => $cate->uuid]) }} "
+                                        href="{{ route('admin.categories.status_categories',['uuid' => $cate->uuid,'status'=>1]) }} "
                                         class="status_btn" style="background:#FA8072!important">Unactive</a>
                                     @php
                                     }else{
                                     @endphp
 
                                     <a onclick="return confirm('Xác nhận tắt kích hoạt nhãn hàng ?')"
-                                        href=" {{ route('admin.categories.active_categories',['uuid' => $cate->uuid]) }}"
+                                        href=" {{ route('admin.categories.status_categories',['uuid' => $cate->uuid,'status'=>0]) }}"
                                         class="status_btn">Active</a>
                                     @php
                                     }

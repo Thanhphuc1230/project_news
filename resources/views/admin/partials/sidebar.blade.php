@@ -34,7 +34,7 @@
                     <img src="{{ asset('style/img/menu-icon/4.svg') }}" alt="">
                 </div>
                 <div class="nav_title">
-                    <span>Category </span>
+                    <span>Chủ đề </span>
                 </div>
             </a>
         </li>
@@ -44,7 +44,7 @@
                     <img src="{{ asset('style/img/menu-icon/4.svg') }}" alt="">
                 </div>
                 <div class="nav_title">
-                    <span>News</span>
+                    <span>Bài biết</span>
                 </div>
             </a>
         </li>
@@ -54,7 +54,7 @@
                     <img src="{{ asset('style/img/menu-icon/4.svg') }}" alt="">
                 </div>
                 <div class="nav_title">
-                    <span>Comment</span>
+                    <span>Bình luận<nav></nav></span>
                 </div>
             </a>
         </li>
@@ -64,7 +64,7 @@
                     <img src="{{ asset('style/img/menu-icon/4.svg') }}" alt="">
                 </div>
                 <div class="nav_title">
-                    <span>User</span>
+                    <span>Users</span>
                 </div>
             </a>
         </li>

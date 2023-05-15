@@ -167,13 +167,13 @@
                                     if($user->status_user == 1){
                                     @endphp
                                     <a onclick="return confirm('Xác nhận chặn người dùng ?')"
-                                        href="{{ route('admin.users.active_user',['id' => $user->uuid]) }} "
+                                        href="{{ route('admin.users.status_user',['uuid' => $user->uuid,'status'=>0]) }} "
                                         class="status_btn">Active</a>
                                     @php
                                     }else{
                                     @endphp
                                     <a onclick="return confirm('Xác nhân cho phép người dùng hoạt động trở lại ?')"
-                                        href="{{ route('admin.users.unactive_user',['id' => $user->uuid]) }}"
+                                        href="{{ route('admin.users.status_user',['uuid' => $user->uuid,'status'=>1]) }}"
                                         class="status_btn" style="background: red !important">Unactive</a>
                                     @php
                                     }

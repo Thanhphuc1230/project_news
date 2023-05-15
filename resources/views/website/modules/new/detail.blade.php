@@ -104,6 +104,9 @@
                                 @endforeach
                             </ul>
                         </div>
+                        <div class="comment-section">
+                                {!!$comments_user->links()!!}
+                        </div>
                         <!--  End .comment-section -->
                         <!--  Begin .form-reply-section -->
 

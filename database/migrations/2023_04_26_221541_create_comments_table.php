@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid();
             $table->string('comment');
             $table->string('user_id_comment');
-            $table->tinyInteger('status_comment');
+            $table->unsignedTinyInteger('status_comment');
             $table->string('post_id_comment');
             $table->timestamps();
         });

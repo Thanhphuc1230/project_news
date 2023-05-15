@@ -14,12 +14,12 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         if (Auth::user()->level !== 1) {
             session()->flash('error_level', 'Bạn không đủ quyền truy cập');
             return redirect()->route('admin.news.index');
         }
-        
+
         $data['users'] = User::select('uuid', 'fullname', 'email', 'created_at', 'level', 'status_user')->get();
         return view('admin.modules.user.index', $data);
     }
@@ -44,26 +44,20 @@ class UserController extends Controller
             ->with('success', 'Thêm thành viên thành công');
     }
 
-    public function active_user($id)
-    {
-        DB::table('users')
-            ->where('uuid', $id)
-            ->update(['status_user' => 0]);
+    public function status_user($uuid,$status)
+    {   
+        if (Auth::user()->level !== 1) {
+            session()->flash('error_level', 'Bạn không đủ quyền hạn để thưc hiện');
+            return redirect()->route('admin.news.index');
+        }
+        User::where('uuid',$uuid)->update(['status_user'=>$status]);
+ 
 
         return redirect()
             ->back()
             ->with('success', 'Người dùng đã bị chặn đăng nhập');
     }
-    public function unactive_user($id)
-    {
-        DB::table('users')
-            ->where('uuid', $id)
-            ->update(['status_user' => 1]);
 
-        return redirect()
-            ->back()
-            ->with('success', 'Người dùng được hoạt động');
-    }
     /**
      * Show the form for editing the specified resource.
      */

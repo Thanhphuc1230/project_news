@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_category');
             $table->uuid();
             $table->string('name_cate');
-            $table->tinyInteger('status_cate');
+            $table->unsignedTinyInteger('status_cate');
             $table->string('link')->nullable();;
             $table->integer('parent_id')->default(0);
             $table->timestamps();

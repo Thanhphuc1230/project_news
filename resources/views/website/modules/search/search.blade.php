@@ -1,6 +1,6 @@
 @extends('website.master')
 
-@section('module', $key)
+@section('module', 'Trang tìm kiếm - 24hnews')
 @section('content')
 <section class="module highlight">
     <div class="container">

@@ -18,6 +18,7 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('where_in', 2)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(3)
             ->get();
 
@@ -25,6 +26,7 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('where_in', 6)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(3)
             ->get();
 
@@ -32,6 +34,7 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('where_in', 11)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(3)
             ->get();
 
@@ -39,6 +42,7 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('where_in', 7)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(20)
             ->get();
 
@@ -46,6 +50,7 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('where_in', 8)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(3)
             ->get();
 
@@ -53,12 +58,14 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('where_in', 9)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(3)
             ->get();
         $data['sport_news'] = News::with('category')
             ->where('status', 1)
             ->where('where_in', 10)
             ->inRandomOrder()
+            ->latest('created_at')
             ->limit(20)
             ->get();
 
@@ -96,7 +103,6 @@ class HomeController extends Controller
         $data['breaking_news_left'] = News::with('category')
             ->where('status', 1)
             ->where('where_in', 1)
-            ->inRandomOrder()
             ->limit(4)
             ->latest('created_at')
             ->get();
@@ -105,7 +111,6 @@ class HomeController extends Controller
             ->where('status', 1)
             ->whereNotIn('uuid', $uuidOfLeftNews)
             ->where('where_in', 1)
-            ->inRandomOrder()
             ->limit(4)
             ->latest('created_at')
             ->get();
@@ -138,6 +143,7 @@ class HomeController extends Controller
             ->get();
 
         $data['boot_new'] = $this->boot_new();
+
         return view('website.modules.home.index', $data);
     }
 
@@ -165,47 +171,28 @@ class HomeController extends Controller
             ->where('category_id', $id)
             ->where('status', 1)
             ->latest('created_at')
-            ->limit(6)
-            ->get();
+            ->paginate(6);
+        //get more data of the same type if not enough
+        $parentIdOfChild = DB::table('categories')->where('id_category',$category_ids)->value('parent_id');
+
         $uuidOfNewTop = $data['new_top']->pluck('uuid')->toArray();
 
-        $data['new_mid'] = News::with('category')
+        $data['newOfSameTopic'] = News::with('category')
             ->whereIn('category_id', $category_ids)
             ->whereNotIn('uuid', $uuidOfNewTop)
+            ->OrWhere('category_id',$parentIdOfChild)
             ->latest('created_at')
             ->where('status', 1)
             ->limit(4)
             ->get();
-        $uuidOfNewMid = $data['new_mid']->pluck('uuid')->toArray();
+        $uuidOfNewMid = $data['newOfSameTopic']->pluck('uuid')->toArray();
 
-        $data['new_mid_left'] = News::with('category')
-            ->whereIn('category_id', $category_ids)
-            ->whereNotIn('uuid', $uuidOfNewTop)
-            ->whereNotIn('uuid', $uuidOfNewMid)
-            ->inRandomOrder()
-            ->latest('created_at')
-            ->where('status', 1)
-            ->limit(2)
-            ->get();
-        $uuids = $data['new_mid_left']->pluck('uuid')->toArray();
-
-        $data['new_mid_right'] = News::with('category')
-            ->whereIn('category_id', $category_ids)
-            ->whereNotIn('uuid', $uuidOfNewTop)
-            ->whereNotIn('uuid', $uuidOfNewMid)
-            ->whereNotIn('uuid', $uuids)
-            ->inRandomOrder()
-            ->latest('created_at')
-            ->where('status', 1)
-            ->limit(2)
-            ->get();
-
+      
         $data['boot_new'] = $this->boot_new();
 
         $data['maybeYouLike'] = News::with('category')
             ->whereNotIn('uuid', $uuidOfNewTop)
             ->whereNotIn('uuid', $uuidOfNewMid)
-            ->whereNotIn('uuid', $uuids)
             ->where('status', 1)
             ->latest('created_at')
             ->inRandomOrder()
@@ -213,8 +200,6 @@ class HomeController extends Controller
             ->get();
         return view('website.modules.category.category', $data);
     }
-
- 
 
     private function getTimeAgoString($seconds) {
         $minutes = floor($seconds / 60);

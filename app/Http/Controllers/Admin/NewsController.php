@@ -67,25 +67,16 @@ class NewsController extends Controller
         return redirect()->back()->with('success', 'Đã đăng bài viết thành công');
     }
   
-    public function unactive_news($id){
+    public function status_news($uuid,$status){
         if (Auth::user()->level !== 1) {
             session()->flash('error_level', 'Bạn không đủ quyền hạn để thưc hiện');
             return redirect()->route('admin.news.index');
         }
-        News::where('uuid',$id)->update(['status'=>1]);
+        News::where('uuid',$uuid)->update(['status'=>$status]);
 
         return redirect()->back()->with('success', 'Kích hoạt sản phẩm thành công');
     }
-    public function active_news($id){
-        if (Auth::user()->level !== 1) {
-            session()->flash('error_level', 'Bạn không đủ quyền hạn để thưc hiện');
-            return redirect()->route('admin.news.index');
-        }
-        News::where('uuid',$id)->update(['status'=>0]);
 
-        return redirect()->back()->with('success', 'Tắt kích hoạt sản phẩm thành công');
-
-    }
     /**
      * Show the form for editing the specified resource.
      */

@@ -28,7 +28,7 @@
                         <div class="search-icon-btn"> <span style="cursor:pointer"><i class="fa fa-search"></i></span>
                         </div>
                         <div class="search-input">
-                                <input type="search" class="search-bar" placeholder="Search..." title="Search" />
+                            <input type="search" class="search-bar" placeholder="Search..." title="Search" />
                         </div>
                     </div>
                 </li>
@@ -53,8 +53,8 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" id="sidenav-toggle"> <span
                         class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-                <div class="sidenav-header-logo"><a href="{{ route('website.index') }}"><img src="{{ asset('website/img/logo.png') }} "
-                            alt="Site Logo" />
+                <div class="sidenav-header-logo"><a href="{{ route('website.index') }}"><img
+                            src="{{ asset('website/img/logo.png') }} " alt="Site Logo" />
                         <h2>24h <span>News</span></h2>
                         <h5>Your 24h News Source</h5>
                     </a></div>
@@ -77,7 +77,7 @@
                         </li>
                     @endforeach
                     @if (Auth::user())
-                        <li><a href="{{route('website.profile',['uuid'=>Auth::user()->uuid])}}">Profile</a></li>
+                        <li><a href="{{ route('website.profile', ['uuid' => Auth::user()->uuid]) }}">Profile</a></li>
                     @else
                         <li><a href="{{ route('getLogin') }}">Login</a></li>
                     @endif
@@ -102,7 +102,7 @@
                         </li>
                     @endforeach
                     @if (Auth::user())
-                        <li><a href="{{route('website.profile',['uuid'=>Auth::user()->uuid])}}">Profile</a></li>
+                        <li><a href="{{ route('website.profile', ['uuid' => Auth::user()->uuid]) }}">Profile</a></li>
                     @else
                         <li><a href="{{ route('getLogin') }}">Login</a></li>
                     @endif
@@ -137,7 +137,7 @@
             <!-- End .container -->
         </div>
         <!--========== END .SECOND-MENU NAVBAR #NAV-BELOW-MAIN ==========-->
-       
+
     </div>
 </header>
 

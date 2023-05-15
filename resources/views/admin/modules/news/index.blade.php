@@ -222,10 +222,6 @@
                                         echo '<img src="' . asset('images/news/'.$avatar) . '" width="50px">';
                                     }
                               @endphp
-                          
-                                    
-
-                                   
                                 </td>
                                 <td style="display:inline-block;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;max-width: 20ch;">
                                     {{  html_entity_decode($new->title) }}</td>
@@ -234,13 +230,13 @@
                                     if($new->status == 0){
                                     @endphp
                                     <a onclick="return confirm('Xác nhận kích hoạt bài viết ?')"
-                                        href="{{ route('admin.news.unactive_news',['uuid' => $new->uuid]) }} "
+                                        href="{{ route('admin.news.status_news',['uuid' => $new->uuid,'status'=>1]) }} "
                                         class="status_btn" style="background:#FA8072 !important">Unactive</a>
                                     @php
                                     }else{
                                     @endphp
                                     <a onclick="return confirm('Xác nhận tắt kích hoạt bài viết ?')"
-                                        href="{{ route('admin.news.active_news',['uuid' => $new->uuid]) }} "
+                                        href="{{ route('admin.news.status_news',['uuid' => $new->uuid,'status'=>0]) }} "
                                         class="status_btn">Active</a>
                                     @php
                                     }
